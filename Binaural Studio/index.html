@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binaural Studio</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use the Inter font family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111; /* Darker, deeper background */
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: #e5e5e5;
+        }
+
+        /* Glass Card */
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Beat Visualizer Canvas Style */
+        #beat-visualizer {
+            display: none; /* Hidden by default */
+            background-color: #0a0a0a; 
+            border: 1px solid #333;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.1); /* Subtle glow */
+        }
+
+        /* --- Custom Range Sliders --- */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 8px 0;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        /* Webkit (Chrome/Safari) Thumb */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: 2px solid #22c55e; /* Green accent border */
+            cursor: pointer;
+            margin-top: -7px; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        /* Webkit Track */
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #404040;
+            border-radius: 2px;
+        }
+
+        /* Firefox Thumb */
+        input[type=range]::-moz-range-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: 2px solid #22c55e;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        /* Firefox Track */
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #404040;
+            border-radius: 2px;
+        }
+
+        /* Custom Select Styling */
+        .custom-select {
+            background-color: #262626; 
+            border-color: #404040;
+            color: #f5f5f5;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a3a3a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 2.5rem;
+        }
+        .custom-select:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px #171717, 0 0 0 4px #22c55e;
+        }
+        .custom-select:disabled {
+            opacity: 0.5;
+            background-color: #1a1a1a; 
+            cursor: not-allowed;
+        }
+
+        /* Active preset button style */
+        .beat-btn.active-preset {
+            background-color: #22c55e; /* green-500 */
+            color: #0a0a0a; /* Dark text for contrast */
+            font-weight: 700;
+            border-color: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Custom number input styling */
+        .custom-number-input {
+             background-color: #262626;
+            border-color: #404040;
+            color: #f5f5f5;
+        }
+        .custom-number-input:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: #22c55e;
+        }
+        .custom-number-input:disabled {
+            opacity: 0.5;
+            background-color: #1a1a1a;
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Disabled fieldset for manual controls */
+        fieldset:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.5); /* Visual cue that it's disabled */
+            transition: all 0.3s ease;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            border-top: 1px solid #333;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+        }
+
+    </style>
+</head>
+<body class="text-neutral-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Card -->
+    <div class="glass-panel w-full max-w-lg p-6 sm:p-8 rounded-3xl shadow-2xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-white tracking-tight">Binaural Studio</h1>
+            <p class="text-neutral-400 text-sm mt-1">Mind Expansion & Focus Tools</p>
+        </div>
+
+        <!-- Binaural Beats Section -->
+        <div>
+            <div class="text-center">
+
+                <!-- Fieldset for Manual Controls (The Lab) -->
+                <fieldset id="manual-controls" class="transition-opacity duration-300">
+                    
+                    <!-- Mode Select -->
+                    <div class="flex items-center justify-between mb-4 bg-neutral-800/50 p-1 rounded-lg">
+                        <select id="mode-select" class="bg-transparent text-sm font-medium text-neutral-300 w-full p-2 focus:outline-none text-center cursor-pointer">
+                            <option value="binaural">🎧 Binaural Beats (Headphones)</option>
+                            <option value="isochronic">🔊 Isochronic Tones (Speakers)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Visualizer -->
+                    <canvas id="beat-visualizer" class="w-full h-24 mb-6 rounded-xl"></canvas>
+
+                    <!-- Preset Buttons -->
+                    <div class="grid grid-cols-4 gap-2 mb-6">
+                        <button data-beat="focus" class="beat-btn bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-medium py-2 px-1 rounded-lg transition border border-transparent">
+                            Focus<br><span class="text-[10px] opacity-70">15Hz</span>
+                        </button>
+                        <button data-beat="relax" class="beat-btn bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-medium py-2 px-1 rounded-lg transition border border-transparent">
+                            Relax<br><span class="text-[10px] opacity-70">10Hz</span>
+                        </button>
+                        <button data-beat="meditate" class="beat-btn bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-medium py-2 px-1 rounded-lg transition border border-transparent">
+                            Meditate<br><span class="text-[10px] opacity-70">6Hz</span>
+                        </button>
+                        <button data-beat="sleep" class="beat-btn bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-medium py-2 px-1 rounded-lg transition border border-transparent">
+                            Sleep<br><span class="text-[10px] opacity-70">3Hz</span>
+                        </button>
+                    </div>
+
+                    <!-- Sliders Container -->
+                    <div class="space-y-5 bg-neutral-800/30 p-5 rounded-xl border border-neutral-700/30">
+                        
+                        <!-- Beat Freq -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <label for="beat-freq-slider" class="text-neutral-400 font-medium">Beat Frequency</label>
+                                <span class="text-green-400 font-mono font-bold"><span id="beat-freq-display">10.0</span> Hz</span>
+                            </div>
+                            <input id="beat-freq-slider" type="range" min="1" max="30" value="10" step="0.5">
+                        </div>
+
+                        <!-- Carrier Freq -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <label for="carrier-slider" class="text-neutral-400 font-medium">Carrier Tone</label>
+                                <span class="text-neutral-200 font-mono"><span id="carrier-freq-display">220</span> Hz</span>
+                            </div>
+                            <input id="carrier-slider" type="range" min="60" max="600" value="220" step="1">
+                        </div>
+
+                        <!-- Volume -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <label id="volume-label" for="volume-slider" class="text-neutral-400 font-medium">Binaural Volume</label>
+                            </div>
+                            <input id="volume-slider" type="range" min="0" max="0.3" value="0.1" step="0.01">
+                        </div>
+
+                        <!-- Noise Section -->
+                        <div class="pt-2 border-t border-neutral-700/50 mt-2">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="noise-type-select" class="text-sm text-neutral-400 font-medium">Background Noise</label>
+                                <select id="noise-type-select" class="bg-neutral-800 text-xs text-neutral-300 border border-neutral-600 rounded px-2 py-1 focus:border-green-500 outline-none">
+                                    <option value="none">None</option>
+                                    <option value="white">White</option>
+                                    <option value="pink">Pink</option>
+                                    <option value="brown">Brown</option>
+                                </select>
+                            </div>
+                            <input id="noise-slider" type="range" min="0" max="0.15" value="0.0" step="0.005">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <!-- End of Manual Controls -->
+
+
+                <!-- Stop Button (Main) -->
+                <button id="stop-beats-btn" class="w-full mt-6 bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg transform active:scale-95">
+                    Stop Audio
+                </button>
+
+                <!-- Journeys Section -->
+                <div class="section-divider">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span> Journeys
+                        </h2>
+                        <span id="journey-status" class="text-xs text-purple-400 font-mono"></span>
+                    </div>
+                    
+                    <div class="bg-neutral-800/30 p-1 rounded-xl border border-neutral-700/30 flex gap-2">
+                        <select id="journey-select" class="custom-select flex-grow rounded-lg border-none py-3 px-4 text-sm">
+                            <option value="none">Select a Journey...</option>
+                            <option value="focusRamp">⚡ Focus Ramp (25 min)</option>
+                            <option value="meditationTrip">🧘 Meditation Trip (15 min)</option>
+                            <option value="thetaTrance">🌀 Theta Trance (12 min)</option>
+                            <option value="hypnagogicDip">🌙 Hypnagogic Dip (20 min)</option>
+                        </select>
+                        <button id="play-journey-btn" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-6 rounded-lg transition shadow-lg">
+                            Play
+                        </button>
+                        <button id="stop-journey-btn" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 px-6 rounded-lg transition shadow-lg hidden">
+                            Stop
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Export Section -->
+                <div class="section-divider">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span> Export to WAV
+                    </h2>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-1/3">
+                             <input type="number" id="export-duration" value="5" min="1" max="60" placeholder="Min" class="custom-number-input w-full rounded-lg border-neutral-600 py-3 px-3 text-center text-sm transition font-mono" title="Duration in minutes">
+                        </div>
+                        <button id="export-btn" class="flex-1 bg-neutral-700 hover:bg-neutral-600 text-white font-medium py-3 px-6 rounded-lg transition border border-neutral-600 hover:border-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Download Audio
+                        </button>
+                    </div>
+                    <div id="export-status" class="text-xs text-neutral-400 mt-2 h-4"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Audio State ---
+            let audioContext = null;
+            let currentBeatFreq = 10.0;
+            let currentEntrainmentMode = 'binaural';
+            let visualizerSpeed = 0.5; // For journey visualizer
+
+            // --- Master Nodes ---
+            let masterGainNode = null;
+            let noiseNode = null;
+            let noiseGainNode = null;
+
+            // --- Binaural Nodes ---
+            let oscLeft = null;
+            let oscRight = null;
+            
+            // --- Isochronic Nodes ---
+            let isoOsc = null;
+            let lfoOsc = null;
+            let pulseGainNode = null;
+            let lfoScalerNode = null;
+            let constantOffsetNode = null;
+
+            // --- Journey State ---
+            let journeyInterval = null;
+            let journeyStartTime = 0;
+
+            // --- Visualizer state ---
+            const beatVisualizer = document.getElementById('beat-visualizer');
+            let visualizerContext = null;
+            let visualizerFrameId = null;
+            let visualizerTime = 0;
+
+            // --- UI Elements ---
+            const manualControls = document.getElementById('manual-controls');
+            const beatButtons = document.querySelectorAll('.beat-btn');
+            const stopBeatsBtn = document.getElementById('stop-beats-btn');
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumeLabel = document.getElementById('volume-label');
+            const carrierSlider = document.getElementById('carrier-slider');
+            const carrierFreqDisplay = document.getElementById('carrier-freq-display');
+            const noiseSlider = document.getElementById('noise-slider'); 
+            const noiseSelect = document.getElementById('noise-type-select');
+            const modeSelect = document.getElementById('mode-select');
+            const beatFreqSlider = document.getElementById('beat-freq-slider');
+            const beatFreqDisplay = document.getElementById('beat-freq-display');
+            
+            // Export UI Elements
+            const exportBtn = document.getElementById('export-btn');
+            const exportDurationInput = document.getElementById('export-duration');
+            const exportStatus = document.getElementById('export-status');
+
+            // Journey UI Elements
+            const journeySelect = document.getElementById('journey-select');
+            const playJourneyBtn = document.getElementById('play-journey-btn');
+            const stopJourneyBtn = document.getElementById('stop-journey-btn');
+            const journeyStatus = document.getElementById('journey-status');
+
+
+            const BEAT_PRESETS = {
+                focus: 15.0,    // Beta waves
+                relax: 10.0,    // Alpha waves
+                meditate: 6.0,   // Theta waves
+                sleep: 3.0      // Delta waves
+            };
+
+            const JOURNEYS = {
+                focusRamp: {
+                    name: "Focus Ramp",
+                    duration: 1500, // 25 * 60
+                    noiseType: 'pink', 
+                    steps: [
+                        // time is in seconds
+                        { time: 0,    settings: { beatFreq: 10.0, noiseVolume: 0.01, carrierFreq: 200, volume: 0.1 } },
+                        { time: 180,  settings: { beatFreq: 14.0, noiseVolume: 0.02, carrierFreq: 220 } },
+                        { time: 300,  settings: { beatFreq: 18.0 } },
+                        { time: 1380, settings: { beatFreq: 18.0 } },
+                        { time: 1500, settings: { beatFreq: 12.0, noiseVolume: 0.01, carrierFreq: 200 } }
+                    ]
+                },
+                meditationTrip: {
+                    name: "Meditation Trip",
+                    duration: 900, // 15 * 60
+                    noiseType: 'brown',
+                    steps: [
+                        { time: 0,    settings: { beatFreq: 10.0, noiseVolume: 0.03, carrierFreq: 180, volume: 0.1 } },
+                        { time: 180,  settings: { beatFreq: 7.0,  noiseVolume: 0.04, carrierFreq: 170 } },
+                        { time: 480,  settings: { beatFreq: 4.0,  noiseVolume: 0.05, carrierFreq: 160 } },
+                        { time: 720,  settings: { beatFreq: 8.0,  noiseVolume: 0.04, carrierFreq: 170 } },
+                        { time: 900,  settings: { beatFreq: 10.0, noiseVolume: 0.03, carrierFreq: 180 } }
+                    ]
+                },
+                thetaTrance: {
+                    name: "Theta Trance",
+                    duration: 720, // 12 * 60
+                    noiseType: 'brown',
+                    steps: [
+                        // time is in seconds
+                        { time: 0,    settings: { beatFreq: 9.0, noiseVolume: 0.04, carrierFreq: 136.1, volume: 0.12 } },
+                        { time: 120,  settings: { beatFreq: 9.0 } }, // Hold at 9Hz for 2 mins
+                        { time: 360,  settings: { beatFreq: 4.5, noiseVolume: 0.05 } }, // Ramp to 4.5Hz over 4 mins
+                        { time: 600,  settings: { beatFreq: 4.5 } }, // Hold at 4.5Hz for 4 mins
+                        { time: 720,  settings: { beatFreq: 9.0, noiseVolume: 0.04 } } // Ramp back to 9Hz over 2 mins
+                    ]
+                },
+                hypnagogicDip: {
+                    name: "Hypnagogic Dip",
+                    duration: 1200, // 20 * 60
+                    noiseType: 'pink',
+                    steps: [
+                        // time is in seconds
+                        { time: 0,    settings: { beatFreq: 10.0, noiseVolume: 0.02, carrierFreq: 417, volume: 0.1 } },
+                        { time: 180,  settings: { beatFreq: 10.0 } }, // Hold at 10Hz for 3 mins
+                        { time: 600,  settings: { beatFreq: 6.0,  noiseVolume: 0.03 } }, // Ramp to 6Hz over 7 mins
+                        { time: 1020, settings: { beatFreq: 6.0 } }, // Hold at 6Hz for 7 mins
+                        { time: 1200, settings: { beatFreq: 11.0, noiseVolume: 0.02 } } // Ramp to 11Hz over 3 mins
+                    ]
+                }
+            };
+
+            // --- Noise Generation ---
+            function createWhiteNoise(context) {
+                const bufferSize = 2 * context.sampleRate;
+                const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+                const output = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+                const noise = context.createBufferSource();
+                noise.buffer = buffer;
+                noise.loop = true;
+                return noise;
+            }
+
+            function createPinkNoise(context) {
+                const bufferSize = 2 * context.sampleRate;
+                const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+                const output = buffer.getChannelData(0);
+                let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    b0 = 0.99886 * b0 + white * 0.0555179;
+                    b1 = 0.99332 * b1 + white * 0.0750759;
+                    b2 = 0.96900 * b2 + white * 0.1538520;
+                    b3 = 0.86650 * b3 + white * 0.3104856;
+                    b4 = 0.55000 * b4 + white * 0.5329522;
+                    b5 = -0.7616 * b5 - white * 0.0168980;
+                    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                    output[i] *= 0.11; b6 = white * 0.115926;
+                }
+                const noise = context.createBufferSource();
+                noise.buffer = buffer; noise.loop = true; return noise;
+            }
+
+            function createBrownNoise(context) {
+                const bufferSize = 2 * context.sampleRate;
+                const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+                const output = buffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i]; output[i] *= 3.5;
+                }
+                const noise = context.createBufferSource();
+                noise.buffer = buffer; noise.loop = true; return noise;
+            }
+
+            function startNoise(context, noiseGainNode, noiseType, defaultVolume = 0) {
+                let noiseNode = null;
+                if (noiseType === 'none') {
+                    noiseGainNode.gain.setValueAtTime(0, context.currentTime);
+                    return null;
+                }
+
+                switch (noiseType) {
+                    case 'white': noiseNode = createWhiteNoise(context); break;
+                    case 'pink': noiseNode = createPinkNoise(context); break;
+                    case 'brown': noiseNode = createBrownNoise(context); break;
+                    default: return null;
+                }
+                
+                noiseGainNode.gain.setValueAtTime(defaultVolume, context.currentTime);
+                noiseNode.connect(noiseGainNode);
+                return noiseNode;
+            }
+
+            // --- Sine Wave Visualizer ---
+            function startVisualizer(freq) {
+                stopVisualizer(); 
+                visualizerSpeed = freq * 0.05;
+                beatVisualizer.style.display = 'block';
+                visualizerContext = beatVisualizer.getContext('2d');
+                const canvas = visualizerContext.canvas;
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                const amplitude = canvas.height / 3;
+                const waveLength = 50; 
+                const yOffset = canvas.height / 2;
+                function animate() {
+                    visualizerFrameId = requestAnimationFrame(animate);
+                    visualizerTime += visualizerSpeed;
+                    visualizerContext.clearRect(0, 0, canvas.width, canvas.height);
+                    visualizerContext.strokeStyle = '#22c55e';
+                    visualizerContext.lineWidth = 2;
+                    visualizerContext.beginPath();
+                    for (let x = 0; x < canvas.width; x++) {
+                        const y = yOffset + amplitude * Math.sin((x / waveLength) + visualizerTime);
+                        visualizerContext.lineTo(x, y);
+                    }
+                    visualizerContext.stroke();
+                }
+                animate();
+            }
+
+            function stopVisualizer() {
+                if (visualizerFrameId) {
+                    cancelAnimationFrame(visualizerFrameId);
+                }
+                visualizerFrameId = null;
+                visualizerTime = 0;
+                if (visualizerContext) {
+                    visualizerContext.clearRect(0, 0, beatVisualizer.width, beatVisualizer.height);
+                }
+                beatVisualizer.style.display = 'none';
+                visualizerContext = null;
+            }
+
+            // --- Formatting Helper ---
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            // --- Core Audio Logic ---
+
+            function stopBeats() {
+                if (journeyInterval) {
+                    clearInterval(journeyInterval);
+                    journeyInterval = null;
+                }
+                stopVisualizer(); 
+                if (audioContext) {
+                    if (oscLeft) oscLeft.stop();
+                    if (oscRight) oscRight.stop();
+                    if (noiseNode) noiseNode.stop();
+                    if (isoOsc) isoOsc.stop();
+                    if (lfoOsc) lfoOsc.stop();
+                    if (constantOffsetNode) constantOffsetNode.stop();
+                    return audioContext.close().then(() => {
+                        audioContext = null; masterGainNode = null; noiseNode = null; noiseGainNode = null;
+                        oscLeft = null; oscRight = null; isoOsc = null; lfoOsc = null;
+                        pulseGainNode = null; lfoScalerNode = null; constantOffsetNode = null;
+                    });
+                } else {
+                    return Promise.resolve();
+                }
+            }
+            
+            async function playBeats(beatFreq) {
+                if (journeyInterval) {
+                    await stopJourney();
+                }
+                await stopBeats();
+                try {
+                    currentBeatFreq = beatFreq;
+                    currentEntrainmentMode = modeSelect.value;
+                    const baseFreq = carrierSlider.valueAsNumber;
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    masterGainNode = audioContext.createGain();
+                    masterGainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime);
+                    masterGainNode.connect(audioContext.destination);
+                    if (currentEntrainmentMode === 'binaural') {
+                        oscLeft = audioContext.createOscillator();
+                        const pannerLeft = new StereoPannerNode(audioContext, { pan: -1 });
+                        oscLeft.type = 'sine';
+                        oscLeft.frequency.value = baseFreq;
+                        oscLeft.connect(pannerLeft).connect(masterGainNode);
+                        oscRight = audioContext.createOscillator();
+                        const pannerRight = new StereoPannerNode(audioContext, { pan: 1 });
+                        oscRight.type = 'sine';
+                        oscRight.frequency.value = baseFreq + beatFreq;
+                        oscRight.connect(pannerRight).connect(masterGainNode);
+                        oscLeft.start();
+                        oscRight.start();
+                    } else {
+                        pulseGainNode = audioContext.createGain();
+                        pulseGainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                        pulseGainNode.connect(masterGainNode);
+                        lfoOsc = audioContext.createOscillator();
+                        lfoOsc.type = 'sine';
+                        lfoOsc.frequency.setValueAtTime(beatFreq, audioContext.currentTime);
+                        lfoScalerNode = audioContext.createGain();
+                        lfoScalerNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                        constantOffsetNode = audioContext.createConstantSource();
+                        constantOffsetNode.offset.setValueAtTime(0.5, audioContext.currentTime);
+                        lfoOsc.connect(lfoScalerNode);
+                        lfoScalerNode.connect(pulseGainNode.gain);
+                        constantOffsetNode.connect(pulseGainNode.gain);
+                        isoOsc = audioContext.createOscillator();
+                        isoOsc.type = 'sine';
+                        isoOsc.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
+                        isoOsc.connect(pulseGainNode);
+                        isoOsc.start();
+                        lfoOsc.start();
+                        constantOffsetNode.start();
+                    }
+                    noiseGainNode = audioContext.createGain();
+                    noiseNode = startNoise(audioContext, noiseGainNode, noiseSelect.value, noiseSlider.value);
+                    noiseGainNode.connect(audioContext.destination);
+                    startVisualizer(beatFreq);
+                } catch (e) {
+                    console.error("Error during playback:", e);
+                }
+            }
+
+            // --- Journey Player Logic ---
+            
+            async function playJourney(journey) {
+                await stopBeats();
+                manualControls.disabled = true;
+                playJourneyBtn.classList.add('hidden');
+                stopJourneyBtn.classList.remove('hidden');
+                journeyStatus.textContent = "Initializing...";
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    journeyStartTime = audioContext.currentTime;
+                    const initialSettings = journey.steps[0].settings;
+                    const initialBeatFreq = initialSettings.beatFreq;
+                    const initialCarrierFreq = initialSettings.carrierFreq;
+                    const initialVolume = initialSettings.volume;
+                    const initialNoiseVolume = initialSettings.noiseVolume;
+                    currentEntrainmentMode = modeSelect.value;
+                    masterGainNode = audioContext.createGain();
+                    masterGainNode.gain.setValueAtTime(initialVolume, journeyStartTime);
+                    masterGainNode.connect(audioContext.destination);
+                    if (currentEntrainmentMode === 'binaural') {
+                        oscLeft = audioContext.createOscillator();
+                        const pannerLeft = new StereoPannerNode(audioContext, { pan: -1 });
+                        oscLeft.type = 'sine';
+                        oscLeft.frequency.setValueAtTime(initialCarrierFreq, journeyStartTime);
+                        oscLeft.connect(pannerLeft).connect(masterGainNode);
+                        oscRight = audioContext.createOscillator();
+                        const pannerRight = new StereoPannerNode(audioContext, { pan: 1 });
+                        oscRight.type = 'sine';
+                        oscRight.frequency.setValueAtTime(initialCarrierFreq + initialBeatFreq, journeyStartTime);
+                        oscRight.connect(pannerRight).connect(masterGainNode);
+                    } else {
+                        pulseGainNode = audioContext.createGain();
+                        pulseGainNode.gain.setValueAtTime(0, journeyStartTime);
+                        pulseGainNode.connect(masterGainNode);
+                        lfoOsc = audioContext.createOscillator();
+                        lfoOsc.type = 'sine';
+                        lfoOsc.frequency.setValueAtTime(initialBeatFreq, journeyStartTime);
+                        lfoScalerNode = audioContext.createGain();
+                        lfoScalerNode.gain.setValueAtTime(0.5, journeyStartTime);
+                        constantOffsetNode = audioContext.createConstantSource();
+                        constantOffsetNode.offset.setValueAtTime(0.5, journeyStartTime);
+                        lfoOsc.connect(lfoScalerNode).connect(pulseGainNode.gain);
+                        constantOffsetNode.connect(pulseGainNode.gain);
+                        isoOsc = audioContext.createOscillator();
+                        isoOsc.type = 'sine';
+                        isoOsc.frequency.setValueAtTime(initialCarrierFreq, journeyStartTime);
+                        isoOsc.connect(pulseGainNode);
+                    }
+                    noiseGainNode = audioContext.createGain();
+                    noiseNode = startNoise(audioContext, noiseGainNode, journey.noiseType, initialNoiseVolume);
+                    noiseGainNode.connect(audioContext.destination);
+                    
+                    let lastCarrierFreq = initialCarrierFreq;
+                    journey.steps.forEach(step => {
+                        const rampTime = journeyStartTime + step.time;
+                        const settings = step.settings;
+                        if (settings.beatFreq !== undefined) {
+                            if (lfoOsc) lfoOsc.frequency.linearRampToValueAtTime(settings.beatFreq, rampTime);
+                            if (oscRight) {
+                                const carrierFreq = settings.carrierFreq !== undefined ? settings.carrierFreq : lastCarrierFreq;
+                                oscRight.frequency.linearRampToValueAtTime(carrierFreq + settings.beatFreq, rampTime);
+                            }
+                            visualizerSpeed = settings.beatFreq * 0.05;
+                        }
+                        if (settings.carrierFreq !== undefined) {
+                            if (isoOsc) isoOsc.frequency.linearRampToValueAtTime(settings.carrierFreq, rampTime);
+                            if (oscLeft) oscLeft.frequency.linearRampToValueAtTime(settings.carrierFreq, rampTime);
+                            lastCarrierFreq = settings.carrierFreq;
+                        }
+                        if (settings.volume !== undefined) {
+                            masterGainNode.gain.linearRampToValueAtTime(settings.volume, rampTime);
+                        }
+                        if (settings.noiseVolume !== undefined) {
+                            noiseGainNode.gain.linearRampToValueAtTime(settings.noiseVolume, rampTime);
+                        }
+                    });
+                    if (oscLeft) oscLeft.start(journeyStartTime);
+                    if (oscRight) oscRight.start(journeyStartTime);
+                    if (isoOsc) isoOsc.start(journeyStartTime);
+                    if (lfoOsc) lfoOsc.start(journeyStartTime);
+                    if (constantOffsetNode) constantOffsetNode.start(journeyStartTime);
+                    if (noiseNode) noiseNode.start(journeyStartTime);
+                    
+                    startVisualizer(initialBeatFreq);
+                    journeyInterval = setInterval(() => {
+                        const elapsed = audioContext.currentTime - journeyStartTime;
+                        journeyStatus.textContent = `${journey.name} [${formatTime(elapsed)} / ${formatTime(journey.duration)}]`;
+                        let currentRampFreq = initialBeatFreq;
+                        for(const step of journey.steps) {
+                            if (elapsed >= step.time) {
+                                currentRampFreq = step.settings.beatFreq || currentRampFreq;
+                            }
+                        }
+                        visualizerSpeed = currentRampFreq * 0.05;
+                        if (elapsed >= journey.duration) {
+                            stopJourney();
+                        }
+                    }, 250);
+                } catch (e) {
+                    console.error("Error playing journey:", e);
+                    journeyStatus.textContent = "Error playing journey.";
+                    await stopJourney();
+                }
+            }
+
+            async function stopJourney() {
+                await stopBeats();
+                manualControls.disabled = false;
+                playJourneyBtn.classList.remove('hidden');
+                stopJourneyBtn.classList.add('hidden');
+                journeyStatus.textContent = "";
+                journeySelect.value = 'none';
+            }
+
+
+            // --- Event Listeners ---
+            beatButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    beatButtons.forEach(btn => btn.classList.remove('active-preset'));
+                    button.classList.add('active-preset');
+                    const preset = button.dataset.beat;
+                    const beatFreq = BEAT_PRESETS[preset];
+                    beatFreqSlider.value = beatFreq;
+                    beatFreqDisplay.textContent = beatFreq.toFixed(1);
+                    playBeats(beatFreq);
+                });
+            });
+
+            beatFreqSlider.addEventListener('input', (e) => {
+                const newBeatFreq = e.target.valueAsNumber;
+                beatFreqDisplay.textContent = newBeatFreq.toFixed(1);
+                beatButtons.forEach(btn => btn.classList.remove('active-preset')); 
+                if (audioContext && !journeyInterval) {
+                    currentBeatFreq = newBeatFreq;
+                    startVisualizer(newBeatFreq);
+                    if (currentEntrainmentMode === 'binaural') {
+                        const baseFreq = carrierSlider.valueAsNumber;
+                        oscRight.frequency.setValueAtTime(baseFreq + newBeatFreq, audioContext.currentTime);
+                    } else {
+                        lfoOsc.frequency.setValueAtTime(newBeatFreq, audioContext.currentTime);
+                    }
+                }
+            });
+
+            stopBeatsBtn.addEventListener('click', () => {
+                if (journeyInterval) {
+                    stopJourney();
+                } else {
+                    stopBeats();
+                }
+            });
+            
+            modeSelect.addEventListener('input', (e) => {
+                currentEntrainmentMode = e.target.value;
+                if (currentEntrainmentMode === 'binaural') {
+                    // No warning needed in studio design
+                    volumeLabel.textContent = "Binaural Volume";
+                } else {
+                    volumeLabel.textContent = "Tone Volume";
+                }
+                if (audioContext && !journeyInterval) {
+                    playBeats(currentBeatFreq);
+                }
+            });
+
+            volumeSlider.addEventListener('input', (e) => {
+                if (masterGainNode && audioContext && !journeyInterval) {
+                    masterGainNode.gain.setValueAtTime(e.target.value, audioContext.currentTime);
+                }
+            });
+
+            carrierSlider.addEventListener('input', (e) => {
+                const newBaseFreq = e.target.valueAsNumber;
+                carrierFreqDisplay.textContent = newBaseFreq;
+                if (audioContext && currentBeatFreq && !journeyInterval) {
+                    if (currentEntrainmentMode === 'binaural') {
+                        oscLeft.frequency.setValueAtTime(newBaseFreq, audioContext.currentTime);
+                        oscRight.frequency.setValueAtTime(newBaseFreq + currentBeatFreq, audioContext.currentTime);
+                    } else {
+                        isoOsc.frequency.setValueAtTime(newBaseFreq, audioContext.currentTime);
+                    }
+                }
+            });
+
+            noiseSlider.addEventListener('input', (e) => {
+                if (noiseGainNode && audioContext && !journeyInterval) {
+                    noiseGainNode.gain.setValueAtTime(e.target.value, audioContext.currentTime);
+                }
+                if (noiseSelect.value === 'none' && e.target.value > 0) {
+                    noiseSelect.value = 'white';
+                    if (audioContext && !journeyInterval) {
+                        if (noiseNode) noiseNode.stop();
+                        noiseNode = startNoise(audioContext, noiseGainNode, 'white', e.target.value);
+                        if (noiseNode) noiseNode.start();
+                    }
+                }
+            });
+
+            noiseSelect.addEventListener('input', () => {
+                if (audioContext && !journeyInterval) {
+                    if(noiseNode) noiseNode.stop();
+                    noiseNode = startNoise(audioContext, noiseGainNode, noiseSelect.value, noiseSlider.value);
+                    if (noiseNode) noiseNode.start();
+                }
+                if (noiseSlider.value == 0 && noiseSelect.value !== 'none') {
+                    const defaultNoiseVol = 0.02;
+                    noiseSlider.value = defaultNoiseVol;
+                    if (noiseGainNode && audioContext && !journeyInterval) {
+                         noiseGainNode.gain.setValueAtTime(defaultNoiseVol, audioContext.currentTime);
+                    }
+                }
+            });
+
+            // --- Journey Listeners ---
+            playJourneyBtn.addEventListener('click', () => {
+                const journeyId = journeySelect.value;
+                if (journeyId === 'none') {
+                    // Simple visual feedback instead of alert
+                    journeySelect.focus();
+                    return;
+                }
+                const journey = JOURNEYS[journeyId];
+                playJourney(journey);
+            });
+
+            stopJourneyBtn.addEventListener('click', stopJourney);
+
+            // NEW: Journey Select listener to update Export UI
+            journeySelect.addEventListener('input', () => {
+                const journeyId = journeySelect.value;
+                if (journeyId !== 'none') {
+                    exportDurationInput.disabled = true;
+                    exportDurationInput.value = JOURNEYS[journeyId].duration / 60;
+                } else {
+                    exportDurationInput.disabled = false;
+                }
+            });
+
+
+            // --- Export Logic (NOW JOURNEY-AWARE) ---
+            exportBtn.addEventListener('click', async () => {
+                const journeyId = journeySelect.value;
+                const sampleRate = 44100;
+                let exportFilename = "zenith_beat.wav";
+
+                exportBtn.disabled = true;
+                exportBtn.textContent = "Rendering...";
+                exportStatus.textContent = "Initializing...";
+
+                try {
+                    let offlineContext;
+                    const mode = modeSelect.value; 
+
+                    if (journeyId !== 'none') {
+                        const journey = JOURNEYS[journeyId];
+                        const durationSeconds = journey.duration;
+                        const totalSamples = sampleRate * durationSeconds;
+                        exportFilename = `binaural_studio_${journeyId}.wav`;
+                        exportStatus.textContent = `Exporting ${journey.name}...`;
+
+                        offlineContext = new OfflineAudioContext(2, totalSamples, sampleRate);
+
+                        const initialSettings = journey.steps[0].settings;
+                        const initialBeatFreq = initialSettings.beatFreq;
+                        const initialCarrierFreq = initialSettings.carrierFreq;
+                        const initialVolume = initialSettings.volume;
+                        const initialNoiseVolume = initialSettings.noiseVolume;
+                        
+                        const offlineMasterGain = offlineContext.createGain();
+                        offlineMasterGain.gain.setValueAtTime(initialVolume, 0);
+                        offlineMasterGain.connect(offlineContext.destination);
+
+                        let offlineOscLeft, offlineOscRight, offlineIsoOsc, offlineLfo, offlinePulseGain;
+
+                        if (mode === 'binaural') {
+                            offlineOscLeft = offlineContext.createOscillator();
+                            const pannerLeft = new StereoPannerNode(offlineContext, { pan: -1 });
+                            offlineOscLeft.type = 'sine';
+                            offlineOscLeft.frequency.setValueAtTime(initialCarrierFreq, 0);
+                            offlineOscLeft.connect(pannerLeft).connect(offlineMasterGain);
+                            
+                            offlineOscRight = offlineContext.createOscillator();
+                            const pannerRight = new StereoPannerNode(offlineContext, { pan: 1 });
+                            offlineOscRight.type = 'sine';
+                            offlineOscRight.frequency.setValueAtTime(initialCarrierFreq + initialBeatFreq, 0);
+                            offlineOscRight.connect(pannerRight).connect(offlineMasterGain);
+                        } else {
+                            offlinePulseGain = offlineContext.createGain();
+                            offlinePulseGain.gain.setValueAtTime(0, 0);
+                            offlinePulseGain.connect(offlineMasterGain);
+
+                            offlineLfo = offlineContext.createOscillator();
+                            offlineLfo.type = 'sine';
+                            offlineLfo.frequency.setValueAtTime(initialBeatFreq, 0);
+
+                            const offlineLfoScaler = offlineContext.createGain();
+                            offlineLfoScaler.gain.setValueAtTime(0.5, 0);
+                            const offlineOffset = offlineContext.createConstantSource();
+                            offlineOffset.offset.setValueAtTime(0.5, 0);
+                            offlineLfo.connect(offlineLfoScaler).connect(offlinePulseGain.gain);
+                            offlineOffset.connect(offlinePulseGain.gain);
+
+                            offlineIsoOsc = offlineContext.createOscillator();
+                            offlineIsoOsc.type = 'sine';
+                            offlineIsoOsc.frequency.setValueAtTime(initialCarrierFreq, 0);
+                            offlineIsoOsc.connect(offlinePulseGain);
+                        }
+
+                        const offlineNoiseGain = offlineContext.createGain();
+                        const offlineNoiseNode = startNoise(offlineContext, offlineNoiseGain, journey.noiseType, initialNoiseVolume);
+                        if (offlineNoiseNode) offlineNoiseGain.connect(offlineContext.destination);
+
+                        let lastCarrierFreq = initialCarrierFreq;
+                        journey.steps.forEach(step => {
+                            const rampTime = step.time;
+                            const settings = step.settings;
+                            if (settings.beatFreq !== undefined) {
+                                if (offlineLfo) offlineLfo.frequency.linearRampToValueAtTime(settings.beatFreq, rampTime);
+                                if (offlineOscRight) {
+                                    const carrierFreq = settings.carrierFreq !== undefined ? settings.carrierFreq : lastCarrierFreq;
+                                    offlineOscRight.frequency.linearRampToValueAtTime(carrierFreq + settings.beatFreq, rampTime);
+                                }
+                            }
+                            if (settings.carrierFreq !== undefined) {
+                                if (offlineIsoOsc) offlineIsoOsc.frequency.linearRampToValueAtTime(settings.carrierFreq, rampTime);
+                                if (offlineOscLeft) offlineOscLeft.frequency.linearRampToValueAtTime(settings.carrierFreq, rampTime);
+                                lastCarrierFreq = settings.carrierFreq;
+                            }
+                        if (settings.volume !== undefined) {
+                                offlineMasterGain.gain.linearRampToValueAtTime(settings.volume, rampTime);
+                            }
+                            if (settings.noiseVolume !== undefined) {
+                                offlineNoiseGain.gain.linearRampToValueAtTime(settings.noiseVolume, rampTime);
+                            }
+                        });
+
+                        if (offlineOscLeft) offlineOscLeft.start(0);
+                        if (offlineOscRight) offlineOscRight.start(0);
+                        if (offlineIsoOsc) offlineIsoOsc.start(0);
+                        if (offlineLfo) offlineLfo.start(0);
+                        if (offlinePulseGain) offlinePulseGain.connect(offlineMasterGain);
+                        if (offlineNoiseNode) offlineNoiseNode.start(0);
+
+
+                    } else {
+                        // --- EXPORT STATIC ---
+                        const settings = {
+                            durationMinutes: exportDurationInput.valueAsNumber,
+                            beatFreq: beatFreqSlider.valueAsNumber,
+                            carrierFreq: carrierSlider.valueAsNumber,
+                            volume: volumeSlider.valueAsNumber,
+                            noiseType: noiseSelect.value,
+                            noiseVolume: noiseSlider.valueAsNumber
+                        };
+                        
+                        if (settings.durationMinutes <= 0 || isNaN(settings.durationMinutes)) {
+                            exportStatus.textContent = "Invalid duration.";
+                            exportBtn.disabled = false;
+                            exportBtn.textContent = "Download Audio";
+                            return;
+                        }
+                        
+                        exportStatus.textContent = "Rendering audio...";
+                        const durationSeconds = settings.durationMinutes * 60;
+                        const totalSamples = sampleRate * durationSeconds;
+                        offlineContext = new OfflineAudioContext(2, totalSamples, sampleRate);
+                        
+                        const offlineMasterGain = offlineContext.createGain();
+                        offlineMasterGain.gain.setValueAtTime(settings.volume, 0);
+                        offlineMasterGain.connect(offlineContext.destination);
+
+                        if (mode === 'binaural') {
+                            const offlineOscLeft = offlineContext.createOscillator();
+                            const pannerLeft = new StereoPannerNode(offlineContext, { pan: -1 });
+                            offlineOscLeft.type = 'sine';
+                            offlineOscLeft.frequency.value = settings.carrierFreq;
+                            offlineOscLeft.connect(pannerLeft).connect(offlineMasterGain);
+                            
+                            const offlineOscRight = offlineContext.createOscillator();
+                            const pannerRight = new StereoPannerNode(offlineContext, { pan: 1 });
+                            offlineOscRight.type = 'sine';
+                            offlineOscRight.frequency.value = settings.carrierFreq + settings.beatFreq;
+                            offlineOscRight.connect(pannerRight).connect(offlineMasterGain);
+                            
+                            offlineOscLeft.start(0);
+                            offlineOscRight.start(0);
+                        } else {
+                            const offlinePulseGain = offlineContext.createGain();
+                            offlinePulseGain.gain.setValueAtTime(0, 0);
+                            offlinePulseGain.connect(offlineMasterGain);
+
+                            const offlineLfo = offlineContext.createOscillator();
+                            offlineLfo.type = 'sine';
+                            offlineLfo.frequency.setValueAtTime(settings.beatFreq, 0);
+
+                            const offlineLfoScaler = offlineContext.createGain();
+                            offlineLfoScaler.gain.setValueAtTime(0.5, 0);
+                            const offlineOffset = offlineContext.createConstantSource();
+                            offlineOffset.offset.setValueAtTime(0.5, 0);
+                            offlineLfo.connect(offlineLfoScaler).connect(offlinePulseGain.gain);
+                            offlineOffset.connect(offlinePulseGain.gain);
+
+                            const offlineIsoOsc = offlineContext.createOscillator();
+                            offlineIsoOsc.type = 'sine';
+                            offlineIsoOsc.frequency.setValueAtTime(settings.carrierFreq, 0);
+                            offlineIsoOsc.connect(offlinePulseGain);
+
+                            offlineIsoOsc.start(0);
+                            offlineLfo.start(0);
+                            offlineOffset.start(0);
+                        }
+
+                        if (settings.noiseType !== 'none' && settings.noiseVolume > 0) {
+                            const offlineNoiseGain = offlineContext.createGain();
+                            const offlineNoiseNode = startNoise(offlineContext, offlineNoiseGain, settings.noiseType, settings.noiseVolume);
+                            if (offlineNoiseNode) {
+                                offlineNoiseGain.connect(offlineContext.destination);
+                                offlineNoiseNode.start(0);
+                            }
+                        }
+                    }
+
+                    exportStatus.textContent = "Rendering... (almost done)";
+                    const renderedBuffer = await offlineContext.startRendering();
+
+                    exportStatus.textContent = "Saving file...";
+                    const wavBlob = audioBufferToWav(renderedBuffer);
+
+                    const url = URL.createObjectURL(wavBlob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = exportFilename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    exportStatus.textContent = "Download Complete!";
+                
+                } catch (e) {
+                    console.error("Export failed:", e);
+                    exportStatus.textContent = "Export failed.";
+                }
+
+                exportBtn.disabled = false;
+                exportBtn.textContent = "Download Audio";
+                setTimeout(() => {
+                    if (exportStatus.textContent === "Download Complete!") {
+                        exportStatus.textContent = "";
+                    }
+                }, 4000);
+            });
+
+
+            // --- Initial Setup ---
+            beatVisualizer.style.display = 'none';
+            // Removed warning for clean look
+            volumeLabel.textContent = "Binaural Volume";
+
+            const initialBeatFreq = 10.0;
+            beatFreqSlider.value = initialBeatFreq;
+            beatFreqDisplay.textContent = initialBeatFreq.toFixed(1);
+            document.querySelector('[data-beat="relax"]').classList.add('active-preset');
+            currentBeatFreq = initialBeatFreq;
+
+
+            // --- WAV Encoding Functions ---
+            function audioBufferToWav(buffer) {
+                const numChannels = buffer.numberOfChannels, sampleRate = buffer.sampleRate, format = 1, bitDepth = 16;
+                let channels = [];
+                for (let i = 0; i < numChannels; i++) { channels.push(buffer.getChannelData(i)); }
+                let interleaved = new Int16Array(buffer.length * numChannels);
+                let offset = 0;
+                for (let i = 0; i < buffer.length; i++) {
+                    for (let ch = 0; ch < numChannels; ch++) {
+                        let sample = Math.max(-1, Math.min(1, channels[ch][i]));
+                        sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                        interleaved[offset++] = sample;
+                    }
+                }
+                const dataSize = numChannels * buffer.length * (bitDepth / 8);
+                const bufferLength = 44 + dataSize;
+                const arrayBuffer = new ArrayBuffer(bufferLength);
+                const view = new DataView(arrayBuffer);
+                writeString(view, 0, 'RIFF');
+                view.setUint32(4, 36 + dataSize, true);
+                writeString(view, 8, 'WAVE');
+                writeString(view, 12, 'fmt ');
+                view.setUint32(16, 16, true);
+                view.setUint16(20, format, true);
+                view.setUint16(22, numChannels, true);
+                view.setUint32(24, sampleRate, true);
+                view.setUint32(28, sampleRate * numChannels * (bitDepth / 8), true);
+                view.setUint16(32, numChannels * (bitDepth / 8), true);
+                view.setUint16(34, bitDepth, true);
+                writeString(view, 36, 'data');
+                view.setUint32(40, dataSize, true);
+                for (let i = 0; i < interleaved.length; i++) {
+                    view.setInt16(44 + i * 2, interleaved[i], true);
+                }
+                return new Blob([view], { type: 'audio/wav' });
+            }
+
+            function writeString(view, offset, string) {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            }
+
+        });
+    </script>
+</body>
+</html>
