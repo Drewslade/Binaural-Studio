@@ -1,75 +1,99 @@
 # Binaural Studio
 
-The code behind [binaural-studio.com](https://binaural-studio.com) — a free binaural beat / isochronic tone generator with research-aware listening guides.
+The code behind [binaural-studio.com](https://binaural-studio.com): a free binaural beat / isochronic tone generator with research-aware listening guides.
 
-**Stack:** Next.js (App Router) · TinaCMS (git-backed content) · Tailwind CSS · Vercel
+**Stack:** Next.js App Router, Payload CMS, Supabase Postgres, Tailwind CSS, Vercel
 
-## Quick start
+## Quick Start
 
 ```bash
 npm install
-npm run dev        # site at http://localhost:3000, CMS at http://localhost:3000/admin
+npm run dev
 ```
 
-`npm run dev` runs TinaCMS in local mode — the `/admin` editor works immediately, no account needed. Edits are written straight to the markdown files in `content/`; commit them like any other change.
+The site runs at `http://localhost:3000`. Payload's admin runs at `http://localhost:3000/admin` after `DATABASE_URL` and `PAYLOAD_SECRET` are set.
 
 | Script | What it does |
 |---|---|
-| `npm run dev` | Next dev server + local Tina editor at `/admin` |
-| `npm run dev:next` | Next dev server only (no CMS) |
-| `npm run build` | Production build (what Vercel runs — needs no CMS credentials) |
-| `npm run build:tina` | Build including the hosted Tina admin (needs Tina Cloud env vars) |
+| `npm run dev` | Next dev server with Payload mounted at `/admin` |
+| `npm run build` | Production build |
+| `npm run start` | Run the production build locally |
+| `npm run payload` | Run the Payload CLI |
+| `npm run payload:generate` | Generate Payload TypeScript types |
+| `npm run payload:migrate:create` | Create a Payload database migration |
+| `npm run payload:migrate` | Run Payload database migrations |
 
-## Project layout
+## Project Layout
 
-```
-lib/audio-engine/   Framework-agnostic Web Audio engine (no React/Next imports)
-lib/content.ts      Reads content/ markdown at build time
-tina/config.ts      CMS collections: frequency, uses, research, blog, pages
-content/            All editable content (markdown + frontmatter)
+```text
+app/(payload)/      Payload admin, REST API, GraphQL API
+collections/        Payload CMS collections
+payload.config.ts   Payload database, admin, editor, SEO config
+lib/audio-engine/   Framework-agnostic Web Audio engine
+lib/content.ts      Legacy Markdown reader used until content is imported
+content/            Existing Markdown content to migrate into Payload
 app/(dark)/         Ink-dark pages: home, /studio
-app/(light)/        Paper-light reading pages: /frequency, /uses, /research, /blog, /about, /contact
-app/api/contact/    Contact form endpoint (Resend)
+app/(light)/        Paper-light reading pages
+app/api/contact/    Contact form endpoint
 components/         Header, Footer, studio UI, cards
-legacy/index.html   The original single-file generator this was ported from
+legacy/index.html   Original single-file generator
 ```
 
-The audio engine is deliberately isolated: `lib/audio-engine` contains the oscillator graph (binaural + isochronic), noise generators, journey scheduler, and offline WAV renderer, and imports nothing from React or Next. The studio page is just a UI over it.
+## Payload Setup
 
-## Deploying to Vercel
+Create a Supabase project, then copy the Transaction Pooler connection string on port `6543`.
 
-1. Push this repo to GitHub and import it in Vercel — defaults work as-is (`npm run build`)
-2. Point the `binaural-studio.com` domain at the Vercel project
-3. Add env vars as you enable features (below)
+Set these locally in `.env.local` and in Vercel:
 
-### Contact form (Resend)
+```bash
+DATABASE_URL=
+PAYLOAD_SECRET=
+```
+
+Use a strong random `PAYLOAD_SECRET`. For production, also make sure Vercel has the same values before deploying.
+
+Once the env vars are set:
+
+1. Run `npm run dev`
+2. Visit `http://localhost:3000/admin`
+3. Create the first admin user
+4. Create and run migrations when the schema is ready:
+
+```bash
+npm run payload:migrate:create
+npm run payload:migrate
+```
+
+## Deploying To Vercel
+
+1. Push this repo to GitHub and import it in Vercel.
+2. Point the `binaural-studio.com` domain at the Vercel project.
+3. Add `DATABASE_URL` and `PAYLOAD_SECRET` in Vercel project settings.
+4. Add contact-form env vars if enabling Resend.
+5. Deploy with `npm run build`.
+
+## Contact Form
 
 Without configuration the form returns a friendly "not wired up yet" error. To enable it:
 
-1. Create a [Resend](https://resend.com) account and API key
-2. In Vercel, set `RESEND_API_KEY`. Optional: `CONTACT_TO_EMAIL` (defaults to drew@digitalmiddleground.com) and `CONTACT_FROM_EMAIL` (defaults to Resend's sandbox sender; switch it to a `binaural-studio.com` address after verifying the domain in Resend)
+1. Create a [Resend](https://resend.com) account and API key.
+2. In Vercel, set `RESEND_API_KEY`.
+3. Optional: set `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL`.
 
-### Editing content on the live site (Tina Cloud)
+## Content Model
 
-Local editing needs nothing. To edit from production `/admin`:
+- **Frequency** (`frequency`) - the five EEG bands; fixed set, editable copy
+- **Uses** (`uses`) - use-case guides tagged with bands and linked to research entries
+- **Research** (`research`) - curated studies with source URL, summary, tags, evidence strength, and featured flag
+- **Posts** (`posts`) - standard blog posts
+- **Pages** (`pages`) - editable static pages
+- **Media** (`media`) - image uploads
 
-1. Create a free project at [app.tina.io](https://app.tina.io) connected to the GitHub repo
-2. In Vercel, set `NEXT_PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN`
-3. Change the Vercel build command to `npm run build:tina`
+The existing Markdown files remain in `content/` until they are imported into Payload.
 
-Tina commits edits back to the repo, which re-triggers a Vercel deploy — content changes go live in a couple of minutes.
+> Warning: The seeded research entries are placeholders. The studies are real and well-known, but the citations and links should be verified against the actual papers before launch.
 
-## Content model
-
-- **Frequency** (`content/frequency/`) — the five EEG bands; fixed set, editable copy
-- **Uses** (`content/uses/`) — use-case guides; tagged with bands, linked to research entries
-- **Research** (`content/research/`) — curated studies: source URL, original-words summary, band/use tags, evidence strength, `featured` pins it to the top of `/research`
-- **Blog** (`content/blog/`) — standard posts
-- **Pages** (`content/pages/`) — the About page
-
-> ⚠️ **The seeded research entries are placeholders.** The studies are real and well-known, but the citations/links were written from memory — verify each title, author, and URL against the actual paper before launch, per the "no unverified study content" rule.
-
-## Deliberately deferred to v2
+## Deferred To V2
 
 - Preset auto-load from `/uses/[slug]` into `/studio` via URL params
-- Automated research discovery/sourcing (manual curation only in v1 — legal + reliability risk)
+- Automated research discovery/sourcing

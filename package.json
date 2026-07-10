@@ -2,27 +2,35 @@
   "name": "binaural-studio",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "binaural-studio.com — binaural beat generator and research-aware listening guides",
   "scripts": {
-    "dev": "tinacms dev -c \"next dev\"",
-    "dev:next": "next dev",
+    "dev": "next dev",
     "build": "next build",
-    "build:tina": "tinacms build && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "payload": "payload",
+    "payload:generate": "payload generate:types",
+    "payload:migrate:create": "payload migrate:create",
+    "payload:migrate": "payload migrate"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "3.86.0",
+    "@payloadcms/next": "3.86.0",
+    "@payloadcms/plugin-seo": "3.86.0",
+    "@payloadcms/richtext-lexical": "3.86.0",
+    "graphql": "16.14.2",
     "gray-matter": "^4.0.3",
-    "next": "^15.3.0",
+    "next": "15.4.11",
+    "payload": "3.86.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.0",
-    "tinacms": "^2.7.0"
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
-    "@tinacms/cli": "^1.9.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

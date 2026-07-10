@@ -3,9 +3,9 @@ import path from "path";
 import matter from "gray-matter";
 
 /**
- * Filesystem content reader. TinaCMS edits these same markdown files (see
- * tina/config.ts), so pages render straight from the repo — no CMS API
- * needed at build time.
+ * Filesystem content reader for the current Markdown content. Payload is now
+ * configured as the CMS; these readers keep the existing public pages stable
+ * until the content is imported into Postgres.
  */
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
