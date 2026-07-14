@@ -39,6 +39,23 @@ components/         Header, Footer, studio UI, cards
 legacy/index.html   Original single-file generator
 ```
 
+## Project Documentation
+
+Repository documentation is the durable source of truth for project direction, editorial standards, and development workflows.
+
+Recommended reading order:
+
+1. [`docs/VISION.md`](docs/VISION.md)
+2. [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md)
+3. [`docs/TECH_STACK.md`](docs/TECH_STACK.md)
+4. [`docs/CONTENT_AND_MARKETING.md`](docs/CONTENT_AND_MARKETING.md)
+5. [`docs/TONE_OF_VOICE.md`](docs/TONE_OF_VOICE.md)
+6. [`docs/DEVELOPMENT_WORKFLOW.md`](docs/DEVELOPMENT_WORKFLOW.md)
+7. [`docs/DECISIONS.md`](docs/DECISIONS.md)
+8. [`AGENTS.md`](AGENTS.md)
+
+Update the relevant documentation when a material project, architectural, editorial, or workflow decision changes. Do not treat older chat context as authoritative when it conflicts with repository documentation.
+
 ## Payload Setup
 
 Create a Supabase project, then copy the Transaction Pooler connection string on port `6543`.
