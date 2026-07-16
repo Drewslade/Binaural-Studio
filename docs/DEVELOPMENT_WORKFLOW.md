@@ -58,6 +58,16 @@ Preview environments should not unintentionally edit production data.
 
 As the project grows, use separate development and production database environments, seeded development data, or carefully controlled read-only production access.
 
+## Editorial publishing
+
+Public articles and pages are authored as Markdown and reviewed through branches and Vercel preview deployments.
+
+- Keep publish-ready drafts in `content/drafts/`.
+- Move an article into its public collection only when the page template, metadata, citations, images, and internal links are ready.
+- Use consistent frontmatter for title, excerpt, author, publication date, updated date, category, and featured image.
+- A visual editor may be added later if it commits changes to the same Markdown files.
+- Do not maintain a published article in both Markdown and Payload.
+
 ## Database and CMS changes
 
 Schema changes should include a migration, rollback plan, environment testing, seed or fixture updates where appropriate, documentation, and a data-loss review.
