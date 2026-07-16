@@ -16,6 +16,10 @@ The detailed writing standard is maintained in `TONE_OF_VOICE.md`.
 
 ## Core content model
 
+Public editorial content is authored as Markdown in GitHub. Published articles live in `content/blog/`, while unfinished articles live in `content/drafts/`. Structured frontmatter supplies the article template with author, dates, category, excerpt, image, and SEO information.
+
+A browser-based visual editor may be added later, but it must edit and commit the same Markdown files rather than create a separate content source.
+
 Each major article should include:
 
 - A clear title.
