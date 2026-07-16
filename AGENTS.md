@@ -30,10 +30,11 @@ Repository documentation is the source of truth when it conflicts with older cha
 
 ## Architecture rules
 
-- GitHub owns code and technical documentation.
+- GitHub owns code, technical documentation, and public Markdown editorial content.
 - Vercel owns hosting and deployment configuration.
-- Payload owns structured editorial content.
-- Supabase Postgres stores Payload data and future application data.
+- Payload is optional and owns only collections explicitly assigned to it through a documented decision.
+- Supabase Postgres stores future application data and any specifically approved Payload-managed data.
+- A future visual editor must read and write the repository Markdown files rather than create a second editorial source of truth.
 - Avoid creating multiple authoritative homes for the same data.
 - Use environment variables for secrets and environment-specific configuration.
 - Document new services, dependencies, and data ownership decisions.
@@ -46,6 +47,8 @@ Repository documentation is the source of truth when it conflicts with older cha
 - Avoid unsupported medical claims.
 - Use plain language and state meaningful limitations.
 - Add author, publish date, update date, and source fields where appropriate.
+- Store public articles in `content/blog/`; keep unfinished articles in `content/drafts/`.
+- Use structured frontmatter consistently and update the article template when adding a new editorial field.
 - Optimize for clarity and usefulness before keyword density.
 
 ## Coding rules
