@@ -97,18 +97,22 @@ Without configuration the form returns a friendly "not wired up yet" error. To e
 2. In Vercel, set `RESEND_API_KEY`.
 3. Optional: set `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL`.
 
-## Content Model
+## Editorial Content
 
-- **Frequency** (`frequency`) - the five EEG bands; fixed set, editable copy
-- **Uses** (`uses`) - use-case guides tagged with bands and linked to research entries
-- **Research** (`research`) - curated studies with source URL, summary, tags, evidence strength, and featured flag
-- **Posts** (`posts`) - standard blog posts
-- **Pages** (`pages`) - editable static pages
-- **Media** (`media`) - image uploads
+Public editorial content is stored as Markdown in GitHub and rendered by the Next.js application.
 
-The existing Markdown files remain in `content/` until they are imported into Payload.
+- `content/blog/` - published blog articles
+- `content/drafts/` - articles being prepared but not exposed through the public blog routes
+- `content/pages/` - static editorial pages
+- `content/frequency/` - frequency-band guides
+- `content/uses/` - use-case guides
+- `content/research/` - research summaries and evidence notes
 
-> Warning: The seeded research entries are placeholders. The studies are real and well-known, but the citations and links should be verified against the actual papers before launch.
+GitHub is the source of truth for this content. A future visual editor may be added, but it must read and write the same Markdown files rather than creating a second content database.
+
+Payload remains installed as an optional structured-content and application-data tool. It is not the default publishing path for blog articles or public editorial pages.
+
+> Warning: Existing seeded research entries may contain placeholders. Verify citations and source links against the actual papers before publication.
 
 ## Deferred To V2
 
