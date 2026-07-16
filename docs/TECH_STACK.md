@@ -18,22 +18,25 @@ Supabase provides the PostgreSQL database used by Payload and may support future
 
 The exact schema should be documented separately as it stabilizes.
 
+### Markdown editorial content
+
+Markdown files in GitHub are the primary source of truth for public editorial content, including articles, pages, frequency guides, use-case guides, and research summaries.
+
+This approach provides:
+
+- Version history and review through Git.
+- Direct compatibility with Codex, Claude, and other development tools.
+- Portable content that is not coupled to a database.
+- Preview deployments for editorial review.
+- Structured frontmatter for authors, dates, categories, images, and SEO metadata.
+
+A future visual editor may be added for browser-based editing. It must read and write the same repository Markdown files so the project keeps one authoritative content source.
+
 ### Payload CMS
 
-Payload is the primary editorial interface for structured site content.
+Payload is installed and available for structured content or application data when a database-backed admin interface provides a clear benefit. It is not the default owner of blog articles or public editorial pages.
 
-Expected responsibilities include:
-
-- Articles and pages.
-- Authors.
-- Categories and tags.
-- Research entries and citations.
-- Update history.
-- SEO fields.
-- Editorial status.
-- Media metadata.
-
-Avoid duplicating content ownership across Payload and another system without a documented reason.
+Before moving any content type into Payload, document the reason, migration plan, editing workflow, backup approach, and source-of-truth change. Avoid representing the same published content in both Payload and Markdown.
 
 ## Application stack
 
@@ -82,9 +85,9 @@ Never commit secrets.
 
 ## Data ownership
 
-- Payload owns structured editorial content.
-- Supabase Postgres stores Payload data and future application data.
-- GitHub owns code and technical documentation.
+- GitHub owns code, technical documentation, and public Markdown editorial content.
+- Supabase Postgres stores future application data and any specifically approved Payload-managed data.
+- Payload owns only the collections explicitly assigned to it through a documented decision.
 - Vercel owns deployment configuration and runtime settings.
 - Analytics platforms own traffic and behavior data.
 - Search Console owns organic search performance data.
