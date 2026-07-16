@@ -109,3 +109,24 @@ Initial publishing should follow the foundational cluster defined in `CONTENT_AN
 
 **Revisit when:**  
 The foundational cluster is substantially complete or performance data identifies a stronger opportunity.
+
+
+---
+
+## 2026-07-15: Use GitHub Markdown for public editorial content
+
+**Status:** Accepted
+
+**Decision:**  
+Store blog articles, public editorial pages, frequency guides, use-case guides, and research summaries as Markdown in GitHub. Keep unfinished articles in `content/drafts/` and published blog articles in `content/blog/`.
+
+Payload remains available for specifically approved structured collections or application data, but it does not own the blog or all editorial content by default. This decision supersedes the editorial-ownership portion of the July 14 core-platform decision.
+
+**Reasoning:**  
+Markdown fits the project's AI-assisted development workflow, keeps editorial changes versioned and portable, avoids a database dependency for publishing, and supports Vercel preview review. Drew still wants a visual editing option, so a future editor may be added if it writes changes back to the same Markdown files.
+
+**Consequences:**  
+The article templates must support structured frontmatter, authorship, dates, metadata, citations, structured data, and related content. Editorial changes normally require a Git commit and deployment. The project must not maintain the same published article in both Markdown and Payload.
+
+**Revisit when:**  
+Browser-based editing becomes a major bottleneck, multiple nontechnical editors need independent publishing access, or a specific content type requires database-backed workflows that Markdown cannot reasonably support.
