@@ -4,7 +4,7 @@
 
 ### GitHub
 
-GitHub is the primary source code repository and version history. Use it for code, documentation, pull requests, issues, change history, and deployment integration.
+GitHub is the primary source code repository, editorial content store, and version history. Use it for code, Markdown content, documentation, pull requests, issues, change history, and deployment integration.
 
 ### Vercel
 
@@ -14,34 +14,30 @@ Material changes should be reviewed in a preview deployment before production wh
 
 ### Supabase
 
-Supabase provides the PostgreSQL database used by Payload and may support future application data, authentication, storage, server-side functions, user preferences, and experiment data.
+Supabase is available for future application data, authentication, storage, server-side functions, user preferences, experiment data, or a custom editorial tool.
 
-The exact schema should be documented separately as it stabilizes.
+The public website and Markdown editorial workflow do not currently depend on Supabase. Future use should keep application data separate from archived Payload tables and should be documented before implementation.
 
-### Payload CMS
+### Markdown editorial content
 
-Payload is the primary editorial interface for structured site content.
+Markdown files in GitHub are the source of truth for public editorial content, including articles, pages, frequency guides, use-case guides, and research summaries.
 
-Expected responsibilities include:
+This approach provides:
 
-- Articles and pages.
-- Authors.
-- Categories and tags.
-- Research entries and citations.
-- Update history.
-- SEO fields.
-- Editorial status.
-- Media metadata.
+- Version history and review through Git.
+- Direct compatibility with AI-assisted development tools.
+- Portable content that is not coupled to a database.
+- Vercel previews for editorial review.
+- Structured frontmatter for authors, dates, categories, images, and SEO metadata.
 
-Avoid duplicating content ownership across Payload and another system without a documented reason.
+The project currently has no CMS installed. A future visual editor may be built after the workflow reveals a specific need. It should write to the same Markdown source or use a deliberate, documented migration.
 
 ## Application stack
 
 - Next.js App Router.
 - TypeScript.
 - Tailwind CSS.
-- Payload CMS.
-- Supabase Postgres.
+- Repository Markdown and structured frontmatter.
 - Vercel.
 - Resend for the contact form when configured.
 - Web Audio APIs through the framework-independent audio engine.
@@ -62,13 +58,13 @@ Both tools should read repository documentation before material work and should 
 
 ### Local development
 
-Used for coding, debugging, schema changes, content model work, component development, and tests.
+Used for coding, debugging, content work, component development, and tests.
 
 ### Preview or staging
 
 Vercel preview deployments are the default staging layer for branch and pull-request review.
 
-Review page rendering, responsive behavior, CMS integration, metadata, structured data, redirects, forms, analytics, accessibility, and performance.
+Review page rendering, responsive behavior, metadata, structured data, redirects, forms, analytics, accessibility, and performance.
 
 ### Production
 
@@ -82,21 +78,19 @@ Never commit secrets.
 
 ## Data ownership
 
-- Payload owns structured editorial content.
-- Supabase Postgres stores Payload data and future application data.
-- GitHub owns code and technical documentation.
+- GitHub owns code, technical documentation, and public Markdown editorial content.
 - Vercel owns deployment configuration and runtime settings.
+- Supabase owns future application data only when a feature is deliberately implemented there.
 - Analytics platforms own traffic and behavior data.
 - Search Console owns organic search performance data.
 
 ## Technical priorities
 
-1. Document the current architecture.
-2. Confirm how future application data will be separated from editorial data.
-3. Define staging and migration procedures.
-4. Maintain build, lint, and type checks.
-5. Document environment variables.
-6. Document backups and rollback procedures.
-7. Standardize content models.
-8. Validate structured data and metadata.
-9. Monitor builds, forms, and important public pages.
+1. Keep the Markdown content schema consistent.
+2. Maintain build, lint, and type checks.
+3. Document environment variables.
+4. Document backups and rollback procedures.
+5. Validate structured data and metadata.
+6. Monitor builds, forms, and important public pages.
+7. Record workflow friction before designing a custom editorial interface.
+8. Separate future application data from archived Payload tables before reuse.
