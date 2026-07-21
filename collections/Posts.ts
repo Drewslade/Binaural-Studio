@@ -13,21 +13,24 @@ export const Posts: CollectionConfig = {
   admin: {
     defaultColumns: ["title", "editorialStage", "_status", "publishedDate"],
     description:
-      "Write and save a draft, move it to Owner review, then mark it Approved before publishing or scheduling.",
+      "Write and save a draft, move it to Owner review, then mark it Approved before publishing.",
     useAsTitle: "title",
   },
   hooks: {
     beforeChange: [
-      ({ data }) => {
+      ({ data, originalDoc }) => {
         if (data?._status !== "published") return data;
 
-        if (data.editorialStage !== "approved") {
+        const editorialStage =
+          data.editorialStage ?? originalDoc?.editorialStage;
+
+        if (editorialStage !== "approved") {
           throw new Error(
-            "Move this post to Approved before publishing or scheduling it.",
+            "Move this post to Approved before it can become published.",
           );
         }
 
-        if (!data.publishedDate) {
+        if (!data.publishedDate && !originalDoc?.publishedDate) {
           data.publishedDate = new Date().toISOString();
         }
 
@@ -92,7 +95,7 @@ export const Posts: CollectionConfig = {
       required: true,
       admin: {
         description:
-          "This is the human review gate. Only Approved posts can be published or scheduled.",
+          "This is the human review gate. Only Approved posts can become published.",
         position: "sidebar",
       },
     },
