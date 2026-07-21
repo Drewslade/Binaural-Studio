@@ -14,6 +14,24 @@ Avoid mystical claims presented as fact, false certainty, generic wellness fille
 
 The detailed writing standard is maintained in `TONE_OF_VOICE.md`.
 
+## Editorial source and workflow
+
+Public editorial content is authored as Markdown in GitHub. Published articles live in `content/blog/`. Unfinished articles should remain in a non-public draft location or draft branch until they are approved.
+
+Structured frontmatter should supply templates with the title, slug, content type, status, author, publication date, updated date, category, featured image, summary, and SEO metadata needed by the page.
+
+The working workflow is:
+
+1. Draft a small content batch.
+2. Open a draft pull request.
+3. Review research, claims, tone, metadata, and internal links.
+4. Review the rendered page in a Vercel preview.
+5. Approve and merge only publish-ready content.
+6. Verify the production URL, metadata, structured data, sitemap, analytics, and links.
+7. Use the friction observed in this process to decide whether a custom editor is worthwhile.
+
+A future browser-based editor should update the same Markdown source unless a new source-of-truth migration is explicitly approved.
+
 ## Core content model
 
 Each major article should include:

@@ -3,9 +3,9 @@ import path from "path";
 import matter from "gray-matter";
 
 /**
- * Filesystem content reader for the current Markdown content. Payload is now
- * configured as the CMS; these readers keep the existing public pages stable
- * until the content is imported into Postgres.
+ * Filesystem content reader. Repository Markdown is the source of truth for
+ * public editorial content, so the website does not need a CMS or database
+ * connection at build time.
  */
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -74,7 +74,7 @@ export function getEntry<T>(collection: string, slug: string): Entry<T> | null {
   );
 }
 
-/** Tina reference values look like "content/research/foo.md". */
+/** Content relationships may use paths such as "content/research/foo.md". */
 export function refToSlug(ref: string): string {
   const base = ref.split("/").pop() ?? ref;
   return base.replace(/\.mdx?$/, "");

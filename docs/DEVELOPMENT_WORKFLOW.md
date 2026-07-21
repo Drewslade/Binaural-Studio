@@ -12,7 +12,7 @@ Document the problem, desired outcome, affected pages or systems, acceptance cri
 
 ### 2. Review source files
 
-Before implementation, review the relevant files in `docs/`, `AGENTS.md`, repository documentation, existing code, and data models.
+Before implementation, review the relevant files in `docs/`, `AGENTS.md`, repository documentation, existing code, and content models.
 
 ### 3. Create a branch
 
@@ -30,13 +30,13 @@ Keep changes scoped, reuse existing components, avoid unnecessary dependencies, 
 
 ### 5. Test
 
-At minimum, test build completion, linting, type checks, core page rendering, mobile and desktop layouts, navigation, forms, CMS content, metadata, structured data, redirects, error states, database interactions, and authentication when relevant.
+At minimum, test build completion, type checks, core page rendering, mobile and desktop layouts, navigation, forms, Markdown rendering, metadata, structured data, redirects, and error states when relevant.
 
 ### 6. Review in preview deployment
 
 Use a Vercel preview deployment as the default staging environment.
 
-Review visual quality, content accuracy, responsive behavior, SEO metadata, analytics, accessibility, performance, browser errors, CMS editing behavior, Supabase behavior, and production-like environment variables.
+Review visual quality, content accuracy, responsive behavior, SEO metadata, analytics, accessibility, performance, browser errors, and production-like environment variables.
 
 ### 7. Merge and deploy
 
@@ -46,6 +46,18 @@ Merge after the change satisfies the acceptance criteria. After deployment, veri
 
 Update source files when changes affect architecture, content models, workflows, environment variables, business direction, editorial policy, dependencies, deployment procedures, or long-term decisions.
 
+## Editorial publishing
+
+Public articles and pages are authored as Markdown and reviewed through branches, pull requests, and Vercel previews.
+
+- Keep unfinished work outside public content collections.
+- Use small content batches.
+- Use consistent frontmatter for status, title, slug, content type, summary, author, dates, category, image, and SEO fields.
+- Move an article into its public collection only when the template, metadata, citations, images, and internal links are ready.
+- Verify the first item in a batch in production before publishing the next.
+- Do not maintain the same published article in more than one system.
+- Record workflow friction before building a custom editorial interface.
+
 ## Staging approach
 
 The primary staging approach is Vercel preview deployments:
@@ -54,15 +66,13 @@ The primary staging approach is Vercel preview deployments:
 - Preview deployment for review and QA.
 - Production deployment from `main`.
 
-Preview environments should not unintentionally edit production data.
+The current public website does not need a database. If a future feature uses Supabase or another data service, preview environments must not unintentionally edit production data.
 
-As the project grows, use separate development and production database environments, seeded development data, or carefully controlled read-only production access.
+## Database and custom-tool changes
 
-## Database and CMS changes
+Future schema changes should include a migration, rollback plan, environment testing, seed or fixture updates where appropriate, documentation, and a data-loss review.
 
-Schema changes should include a migration, rollback plan, environment testing, seed or fixture updates where appropriate, documentation, and a data-loss review.
-
-Never assume a local schema change is safe in production.
+Never assume a local schema change is safe in production. Do not delete archived Payload tables until the Payload-free production deployment is verified and their contents are confirmed disposable.
 
 ## AI-assisted development rules
 
