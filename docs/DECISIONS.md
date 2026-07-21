@@ -42,19 +42,19 @@ The documentation becomes too large, fragmented, or difficult to maintain.
 
 ## 2026-07-14: Use GitHub, Vercel, Supabase, and Payload as the core platform stack
 
-**Status:** Accepted
+**Status:** Superseded
 
 **Decision:**  
-Use GitHub for source control, Vercel for hosting and deployments, Supabase Postgres for data, and Payload for structured editorial content.
+The original decision selected GitHub for source control, Vercel for hosting, Supabase Postgres for data, and Payload for structured editorial content.
 
 **Reasoning:**  
-This stack supports AI-assisted development, version control, preview deployments, structured content management, and future product features.
+The stack was expected to support structured publishing and future product features.
 
 **Consequences:**  
-System ownership must remain clear. Editorial content should not be duplicated into another system without a documented reason.
+The Payload portion of this decision was superseded on 2026-07-21. GitHub and Vercel remain core platforms. Supabase remains available for future application data.
 
 **Revisit when:**  
-The stack creates significant operational, cost, performance, or collaboration problems.
+Historical context is needed for a future content-system decision.
 
 ---
 
@@ -109,3 +109,21 @@ Initial publishing should follow the foundational cluster defined in `CONTENT_AN
 
 **Revisit when:**  
 The foundational cluster is substantially complete or performance data identifies a stronger opportunity.
+
+---
+
+## 2026-07-21: Use GitHub Markdown and remove Payload
+
+**Status:** Accepted
+
+**Decision:**  
+Store public editorial content as Markdown in GitHub and remove Payload from the application. Use branches, pull requests, and Vercel previews for drafting and approval. Do not add another CMS at this stage.
+
+**Reasoning:**  
+The live site already renders repository Markdown. Payload introduced a second content system, database migrations, security configuration, scheduled jobs, and operational overhead without serving the public content. Drew wants to learn from the simpler workflow before deciding what a custom interface should contain.
+
+**Consequences:**  
+Payload routes, configuration, generated files, dependencies, and environment-variable requirements are removed. The archived Payload database tables remain temporarily protected by RLS and revoked public privileges until the Payload-free production deployment is verified. A custom editorial interface should be designed only after real workflow friction is documented.
+
+**Revisit when:**  
+The project has enough content volume, collaborators, reusable application data, or scheduling needs that Markdown and pull requests create a measurable bottleneck.
