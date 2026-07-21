@@ -72,7 +72,7 @@ The current public website does not need a database. If a future feature uses Su
 
 Future schema changes should include a migration, rollback plan, environment testing, seed or fixture updates where appropriate, documentation, and a data-loss review.
 
-Never assume a local schema change is safe in production. Do not delete archived Payload tables until the Payload-free production deployment is verified and their contents are confirmed disposable.
+Never assume a local schema change is safe in production. Before destructive data work, verify the production dependency has been removed, confirm exact ownership and row counts, create and validate a recoverable backup, and target objects explicitly without broad cascading deletion.
 
 ## AI-assisted development rules
 

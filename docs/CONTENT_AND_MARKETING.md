@@ -18,6 +18,8 @@ The detailed writing standard is maintained in `TONE_OF_VOICE.md`.
 
 Public editorial content is authored as Markdown in GitHub. Published articles live in `content/blog/`. Unfinished articles should remain in a non-public draft location or draft branch until they are approved.
 
+The full status lifecycle, frontmatter schema, research checks, and publication safeguards are defined in `EDITORIAL_WORKFLOW.md`. Start new articles from `content/templates/article.md`.
+
 Structured frontmatter should supply templates with the title, slug, content type, status, author, publication date, updated date, category, featured image, summary, and SEO metadata needed by the page.
 
 The working workflow is:

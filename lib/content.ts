@@ -41,10 +41,113 @@ export interface ResearchData {
   date?: string;
 }
 
+export type EditorialStatus =
+  | "draft"
+  | "in-review"
+  | "approved"
+  | "published"
+  | "archived";
+
+export interface AuthorData {
+  name: string;
+  slug?: string;
+  role?: string;
+  url?: string;
+  bio?: string;
+  expertise?: string[];
+}
+
+export interface EditorialDates {
+  created?: string | Date;
+  published?: string | Date | null;
+  updated?: string | Date | null;
+  reviewed?: string | Date | null;
+  researchChecked?: string | Date | null;
+}
+
+export interface SeoData {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  robots?: {
+    index?: boolean;
+    follow?: boolean;
+  };
+}
+
+export interface SocialImageData {
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
+
+export interface SocialData {
+  openGraph?: {
+    title?: string;
+    description?: string;
+    image?: SocialImageData;
+  };
+  twitter?: {
+    card?: "summary" | "summary_large_image";
+    title?: string;
+    description?: string;
+    image?: SocialImageData;
+  };
+}
+
+export interface CitationData {
+  id: string;
+  title: string;
+  authors?: string[];
+  year?: number;
+  publication?: string;
+  doi?: string;
+  url: string;
+  accessed?: string | Date;
+  supports?: string[];
+}
+
+export interface StructuredDataConfig {
+  type?: "Article" | "BlogPosting" | "TechArticle";
+  about?: string[];
+  mentions?: { name: string; url?: string }[];
+}
+
+export interface RelatedContentData {
+  title: string;
+  url: string;
+  relationship?: string;
+}
+
 export interface BlogData {
   title: string;
-  date: string;
+  slug?: string;
+  contentType?: "article" | "blog-post" | "guide" | "research-summary";
+  status?: EditorialStatus;
+  reviewStage?: string;
+  summary?: string;
   excerpt?: string;
+  author?: AuthorData | string;
+  dates?: EditorialDates;
+  /** Legacy field retained for existing posts. Prefer `dates.published`. */
+  date?: string | Date;
+  /** Legacy field retained for existing posts. Prefer `dates.updated`. */
+  updated?: string | Date;
+  category?: string;
+  tags?: string[];
+  featuredImage?: SocialImageData | string;
+  seo?: SeoData;
+  social?: SocialData;
+  citations?: CitationData[];
+  structuredData?: StructuredDataConfig;
+  relatedContent?: RelatedContentData[];
+  disclosures?: {
+    aiAssisted?: boolean;
+    aiUse?: string;
+    expertReviewed?: boolean;
+    expertReviewer?: string | null;
+  };
 }
 
 export interface PageData {
@@ -106,9 +209,26 @@ export function getResearch(): Entry<ResearchData>[] {
 }
 
 export function getBlogPosts(): Entry<BlogData>[] {
-  return getCollection<BlogData>("blog").sort(
-    (a, b) => timeOf(b.data.date) - timeOf(a.data.date)
-  );
+  return getCollection<BlogData>("blog")
+    .filter((post) => !post.data.status || post.data.status === "published")
+    .sort(
+      (a, b) =>
+        timeOf(b.data.dates?.published ?? b.data.date) -
+        timeOf(a.data.dates?.published ?? a.data.date)
+    );
+}
+
+/** Return only a publicly publishable blog entry. */
+export function getBlogPost(slug: string): Entry<BlogData> | null {
+  return getBlogPosts().find((post) => post.slug === slug) ?? null;
+}
+
+export function getPublishedDate(post: BlogData): string | Date | undefined {
+  return post.dates?.published ?? post.date;
+}
+
+export function getUpdatedDate(post: BlogData): string | Date | undefined {
+  return post.dates?.updated ?? post.updated ?? getPublishedDate(post);
 }
 
 /** Uses that list this band slug in their `bands` field. */

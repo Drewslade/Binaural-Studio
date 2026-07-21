@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getBlogPosts, getFrequencyBands, getUses } from "@/lib/content";
+import {
+  getBlogPosts,
+  getFrequencyBands,
+  getUpdatedDate,
+  getUses,
+} from "@/lib/content";
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://binaural-studio.com"
@@ -57,7 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
   const posts = getBlogPosts().map((post) =>
     entry(`/blog/${post.slug}`, {
-      lastModified: toDate(post.data.date),
+      lastModified: toDate(getUpdatedDate(post.data)),
       changeFrequency: "monthly",
       priority: 0.65,
     })

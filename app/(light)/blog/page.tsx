@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getBlogPosts } from "@/lib/content";
+import { getBlogPosts, getPublishedDate } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "Notes on sound, attention, and building Binaural Studio.",
 };
 
-function formatDate(date: string): string {
+function formatDate(date: string | Date): string {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -35,9 +35,9 @@ export default function BlogIndexPage() {
             href={`/blog/${post.slug}`}
             className="group block rounded-2xl border border-ink/15 bg-paper p-6 transition-colors hover:border-gold-deep"
           >
-            {post.data.date && (
+            {getPublishedDate(post.data) && (
               <p className="font-mono text-xs text-sage">
-                {formatDate(post.data.date)}
+                {formatDate(getPublishedDate(post.data)!)}
               </p>
             )}
             <h2 className="mt-2 font-display text-2xl font-medium text-ink">
