@@ -109,3 +109,21 @@ Initial publishing should follow the foundational cluster defined in `CONTENT_AN
 
 **Revisit when:**  
 The foundational cluster is substantially complete or performance data identifies a stronger opportunity.
+
+---
+
+## 2026-07-21: Pilot the editorial workflow on Posts
+
+**Status:** Proposed
+
+**Decision:**  
+Pilot Payload drafts, version history, owner approval, scheduled publishing, and published-only public access on the Posts collection before expanding the workflow to other collections.
+
+**Reasoning:**  
+A single-collection pilot limits database and editorial risk while establishing the workflow needed for the first foundational articles. No expert-review stage will be represented until a qualified reviewer is actually available.
+
+**Consequences:**  
+The change requires a reviewed Payload migration, a protected Vercel job runner, a `CRON_SECRET`, and preview verification before merge. The first batch is limited to two articles.
+
+**Revisit when:**  
+The first two posts have moved through the workflow and scheduled publishing has been verified in production.
