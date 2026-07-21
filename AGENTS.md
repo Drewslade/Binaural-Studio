@@ -13,7 +13,7 @@ Before making material changes, read:
 7. `docs/DEVELOPMENT_WORKFLOW.md`
 8. `docs/DECISIONS.md`
 
-Also inspect the relevant code, schema, route, component, or Payload collection before proposing changes.
+Also inspect the relevant code, content file, route, component, or data model before proposing changes.
 
 Repository documentation is the source of truth when it conflicts with older chat context.
 
@@ -30,10 +30,11 @@ Repository documentation is the source of truth when it conflicts with older cha
 
 ## Architecture rules
 
-- GitHub owns code and technical documentation.
+- GitHub owns code, technical documentation, and public Markdown editorial content.
 - Vercel owns hosting and deployment configuration.
-- Payload owns structured editorial content.
-- Supabase Postgres stores Payload data and future application data.
+- The website currently has no CMS dependency.
+- Supabase is reserved for future application data, authentication, storage, or a deliberately approved custom tool.
+- A future visual editor must write to the repository Markdown files or follow a documented source-of-truth migration.
 - Avoid creating multiple authoritative homes for the same data.
 - Use environment variables for secrets and environment-specific configuration.
 - Document new services, dependencies, and data ownership decisions.
@@ -46,16 +47,18 @@ Repository documentation is the source of truth when it conflicts with older cha
 - Avoid unsupported medical claims.
 - Use plain language and state meaningful limitations.
 - Add author, publish date, update date, and source fields where appropriate.
+- Keep unfinished articles outside public content collections.
+- Use structured frontmatter consistently and update templates when adding an editorial field.
 - Optimize for clarity and usefulness before keyword density.
 
 ## Coding rules
 
-- Follow the existing Next.js, TypeScript, Payload, and Tailwind patterns.
+- Follow the existing Next.js, TypeScript, Markdown, and Tailwind patterns.
 - Keep the audio engine framework-independent unless a documented decision changes that architecture.
 - Validate external inputs and add appropriate error handling.
 - Never expose secrets or make destructive database changes without review.
 - Add or update tests when behavior changes.
-- Run relevant build, lint, type, and migration checks.
+- Run relevant build, lint, and type checks.
 
 ## Public routes and sitemap
 
