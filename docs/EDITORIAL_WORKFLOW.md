@@ -13,7 +13,7 @@ Two fields serve different purposes:
 - Payload's native `_status` controls whether a post is a draft or published.
 - `editorialStage` records the human workflow: Writing, Owner review, or Approved.
 
-A post cannot be published or scheduled unless `editorialStage` is Approved. Unauthenticated API requests can only read posts whose native `_status` is Published.
+A post cannot become published unless `editorialStage` is Approved. This approval gate is enforced when a post is published immediately or when a scheduled publishing job executes. Unauthenticated API requests can only read posts whose native `_status` is Published.
 
 No expert-review stage is included in this pilot because no qualified expert is currently available. Do not imply expert review in article copy, metadata, or disclosures.
 
@@ -63,7 +63,7 @@ Before enabling the cron in production:
 5. Deploy the reviewed migration before or with the application code.
 6. Verify unauthenticated `GET /api/posts` returns only published posts.
 7. Verify an authenticated owner can save a draft, move it through review, approve it, schedule it, and inspect its version history.
-8. Verify an unapproved post cannot be published or scheduled.
+8. Verify an unapproved post cannot become published, including through a scheduled job.
 9. Verify the Vercel cron receives HTTP 200 with the authorization header and that an unauthenticated manual request is rejected.
 
 Do not merge this change until the migration and preview checks are complete.
