@@ -2,7 +2,7 @@ import { postgresAdapter } from "@payloadcms/db-postgres";
 import { seoPlugin } from "@payloadcms/plugin-seo";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "path";
-import { buildConfig } from "payload";
+import { buildConfig, type PayloadRequest } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
 
@@ -69,6 +69,18 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || "",
     },
   }),
+  jobs: {
+    access: {
+      run: ({ req }: { req: PayloadRequest }): boolean => {
+        if (req.user) return true;
+
+        const secret = process.env.CRON_SECRET;
+        if (!secret) return false;
+
+        return req.headers.get("authorization") === `Bearer ${secret}`;
+      },
+    },
+  },
   sharp,
   plugins: [
     seoPlugin({
