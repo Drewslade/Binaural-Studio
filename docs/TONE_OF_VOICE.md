@@ -311,6 +311,28 @@ State the limitation once, clearly, near the relevant claim. Then continue with 
 
 The goal is measured clarity, not defensive writing.
 
+### Use topic-driven safety and efficacy coverage
+
+Safety and efficacy are important editorial responsibilities, but they are not mandatory sections in every article.
+
+Use three levels of coverage:
+
+1. **Dedicated coverage:** Maintain a clear site disclaimer and substantial evergreen pages about evidence, safe listening, side effects, and when professional guidance may be appropriate. These pages are the primary destinations for complete baseline guidance.
+2. **Reusable contextual note:** Place a short expandable listening note near audio players, interactive demonstrations, and other places where a reader can immediately play sound. Link it to the dedicated safety page. This interface note should not become repeated article copy.
+3. **Article-specific coverage:** Discuss safety or efficacy in the article body only when it is central to the search intent, necessary to qualify a claim, or needed because the page gives instructions that could create a meaningful risk.
+
+Do not add a generic safety section, hearing reminder, or “results may vary” paragraph merely to satisfy a template. Deep explainers, technical articles, history pages, experiment reports, and frequency pages may stay focused on their actual subject when the relevant limitations are already handled at the claim, interface, or site level.
+
+Examples:
+
+- A safety article should cover hearing protection and adverse effects in depth.
+- An article asking whether binaural beats work should discuss evidence and uncertainty in depth.
+- A frequency page should qualify claims made about that frequency, but it does not need to repeat the full safe-listening guide.
+- A technical article about carrier tones does not need a separate efficacy section unless it makes an outcome claim.
+- Any page with playable audio should expose the reusable listening note near the player.
+
+Site-wide disclaimers do not excuse unsupported claims. Qualify a claim where it appears, but do not repeat unrelated caveats throughout the page.
+
 ### Research hierarchy
 
 For scientific and health-related claims, prefer:
