@@ -4,6 +4,7 @@ import type { EngineParams, EntrainmentMode, Journey, NoiseType } from "./types"
 
 export interface EngineSnapshot {
   playing: boolean;
+  paused: boolean;
   params: EngineParams;
   journey: Journey | null;
   journeyElapsed: number;
@@ -23,6 +24,9 @@ type Listener = (snapshot: EngineSnapshot) => void;
 export class BinauralEngine {
   private context: AudioContext | null = null;
   private graph: ToneGraph | null = null;
+  private mediaElement: HTMLAudioElement | null = null;
+  private mediaDestination: MediaStreamAudioDestinationNode | null = null;
+  private paused = false;
   private params: EngineParams;
   private journey: Journey | null = null;
   private journeyStartTime = 0;
@@ -45,7 +49,8 @@ export class BinauralEngine {
 
   get snapshot(): EngineSnapshot {
     return {
-      playing: this.graph !== null,
+      playing: this.graph !== null && !this.paused,
+      paused: this.graph !== null && this.paused,
       params: { ...this.params },
       journey: this.journey,
       journeyElapsed: this.journeyElapsed,
@@ -53,7 +58,11 @@ export class BinauralEngine {
   }
 
   get isPlaying(): boolean {
-    return this.graph !== null;
+    return this.graph !== null && !this.paused;
+  }
+
+  get isPaused(): boolean {
+    return this.graph !== null && this.paused;
   }
 
   get isJourneyActive(): boolean {
@@ -67,6 +76,47 @@ export class BinauralEngine {
   get journeyElapsed(): number {
     if (!this.context || !this.journey) return 0;
     return this.context.currentTime - this.journeyStartTime;
+  }
+
+  /**
+   * Route live Web Audio through an HTML audio element when the browser
+   * supports it. Mobile browsers treat media elements as background audio
+   * more reliably than a bare AudioContext, including when the screen locks.
+   */
+  private async createPlaybackDestination(): Promise<AudioNode> {
+    const context = this.context;
+    if (!context) throw new Error("Audio context is not available.");
+    if (typeof Audio === "undefined") return context.destination;
+
+    try {
+      const destination = context.createMediaStreamDestination();
+      const mediaElement = new Audio();
+      mediaElement.autoplay = false;
+      mediaElement.setAttribute("playsinline", "");
+      mediaElement.srcObject = destination.stream;
+      this.mediaDestination = destination;
+      this.mediaElement = mediaElement;
+      await mediaElement.play();
+      return destination;
+    } catch {
+      this.releaseMediaElement();
+      return context.destination;
+    }
+  }
+
+  private releaseMediaElement(): void {
+    const mediaElement = this.mediaElement;
+    const mediaDestination = this.mediaDestination;
+    this.mediaElement = null;
+    this.mediaDestination = null;
+
+    if (mediaElement) {
+      mediaElement.pause();
+      mediaElement.srcObject = null;
+    }
+    for (const track of mediaDestination?.stream.getTracks() ?? []) {
+      track.stop();
+    }
   }
 
   /** Beat frequency at a point in a journey (linear ramp between steps). */
@@ -94,7 +144,8 @@ export class BinauralEngine {
     await this.stop();
     this.params = { ...this.params, ...overrides };
     this.context = new AudioContext();
-    this.graph = buildToneGraph(this.context, this.params);
+    const destination = await this.createPlaybackDestination();
+    this.graph = buildToneGraph(this.context, this.params, destination);
     this.graph.start();
     this.emit();
   }
@@ -102,6 +153,7 @@ export class BinauralEngine {
   async playJourney(journey: Journey): Promise<void> {
     await this.stop();
     this.context = new AudioContext();
+    const destination = await this.createPlaybackDestination();
     this.journey = journey;
     this.journeyStartTime = this.context.currentTime;
 
@@ -114,7 +166,7 @@ export class BinauralEngine {
       noiseType: journey.noiseType,
       noiseVolume: first.noiseVolume ?? 0,
     };
-    this.graph = buildToneGraph(this.context, initial);
+    this.graph = buildToneGraph(this.context, initial, destination);
     this.graph.scheduleJourney(journey, this.journeyStartTime);
     this.graph.start();
 
@@ -135,10 +187,12 @@ export class BinauralEngine {
       this.journeyTimer = null;
     }
     this.journey = null;
+    this.paused = false;
     if (this.graph) {
       this.graph.stop();
       this.graph = null;
     }
+    this.releaseMediaElement();
     if (this.context) {
       const context = this.context;
       this.context = null;
@@ -149,6 +203,30 @@ export class BinauralEngine {
       }
     }
     this.emit();
+  }
+
+  async pause(): Promise<void> {
+    if (!this.context || !this.graph || this.paused) return;
+    this.paused = true;
+    this.mediaElement?.pause();
+    try {
+      await this.context.suspend();
+    } catch {
+      // The context may already be interrupted by the operating system.
+    }
+    this.emit();
+  }
+
+  async resume(): Promise<void> {
+    if (!this.context || !this.graph || !this.paused) return;
+    try {
+      await this.context.resume();
+      await this.mediaElement?.play();
+      this.paused = false;
+      this.emit();
+    } catch {
+      // Keep the paused state so the interface does not claim audio resumed.
+    }
   }
 
   setBeatFreq(beatFreq: number): void {

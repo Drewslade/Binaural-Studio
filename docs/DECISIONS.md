@@ -127,3 +127,25 @@ Payload routes, configuration, generated files, dependencies, and environment-va
 
 **Revisit when:**  
 The project has enough content volume, collaborators, reusable application data, or scheduling needs that Markdown and pull requests create a measurable bottleneck.
+
+---
+
+## 2026-07-22: Keep Studio audio and WAV rendering in the browser
+
+**Status:** Accepted
+
+**Decision:**
+
+Keep live Studio playback and custom WAV creation client-side. Route live Web Audio through an HTML audio element when supported so mobile browsers can treat a session as background media. Generate WAV data in small chunks and require a second, user-initiated save or share action after rendering.
+
+**Reasoning:**
+
+The previous export allocated the full stereo session several times in memory and immediately revoked its temporary download URL. That was unreliable on mobile. Server-side custom audio generation would add storage, job processing, and operating costs that are not justified yet.
+
+**Consequences:**
+
+Exports remain private to the listener's device, use a 22.05 kHz stereo WAV format, and are limited to 30 minutes for manually configured sessions. Mobile background playback remains browser-dependent and requires device testing as iOS and Android behavior changes.
+
+**Revisit when:**
+
+Listeners need compressed downloads, longer sessions, saved projects, guaranteed background playback, or native-app reliability.
