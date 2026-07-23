@@ -188,7 +188,7 @@ Frequency describes how many times a sound wave repeats each second and is measu
 
 When those tones are delivered separately, one to each ear, the auditory system receives two related but mismatched signals. The listener may perceive a fluctuation equal to the difference between them. In this example, the difference is 10 Hz.
 
-Gerald Oster's 1973 article in *Scientific American* synthesized earlier work and helped renew research interest in binaural beats. Oster described slow modulations perceived when tones with different frequencies are presented separately to each ear. The phenomenon has since been studied in psychoacoustics, neuroscience, psychology, and related fields. ([Oster, 1973](https://doi.org/10.1038/scientificamerican1073-94))
+Gerald Oster's 1973 article in *Scientific American* synthesized earlier work and helped renew research interest in binaural beats. Oster described slow modulations perceived when tones with different frequencies are presented separately to each ear. The phenomenon has since been studied in psychoacoustics, the science of how people perceive sound, as well as neuroscience, psychology, and related fields. ([Oster, 1973](https://doi.org/10.1038/scientificamerican1073-94))
 
 ### Carrier frequency and beat frequency are different
 
@@ -252,9 +252,9 @@ The careful interpretation is that binaural beats can produce measurable neural 
 
 The auditory effect works when the tones and listening setup allow it to be perceived. Whether it improves focus, reduces anxiety, changes pain perception, or supports sleep depends on the outcome being measured and the conditions of the study.
 
-A 2019 meta-analysis combined 22 studies examining cognition, anxiety, and pain perception. The authors reported a medium overall effect (Hedges' g = 0.45) across 35 effect sizes and found that results varied with factors such as frequency, exposure duration, and whether the beats were played before or during a task. The pooled result combines different outcomes and listening protocols, so it should not be read as proof that every track works for every goal. ([Garcia-Argibay, Santed, and Reales, 2019](https://doi.org/10.1007/s00426-018-1066-8))
+A 2019 meta-analysis combined 22 studies examining cognition, anxiety, and pain perception. The authors reported a medium overall effect across 35 comparisons. They expressed that result as Hedges' g = 0.45, a statistical measure used to compare effects across different studies. Results varied with factors such as frequency, exposure duration, and whether the beats were played before or during a task. Because that average combines different outcomes and listening protocols, it should not be read as proof that every track works for every goal. ([Garcia-Argibay, Santed, and Reales, 2019](https://doi.org/10.1007/s00426-018-1066-8))
 
-That finding is encouraging, but it does not settle every claim. Studies have used different frequencies, carrier tones, session lengths, masking sounds, comparison conditions, participant groups, and outcome measures. A person reporting lower anxiety after a listening session is not the same result as an EEG change, improved test score, or clinical treatment effect.
+That finding is encouraging, but it does not settle every claim. Studies have used different frequencies, carrier tones, session lengths, and masking sounds. They also differ in what the binaural audio was compared against, who participated, and what the researchers measured. A person reporting lower anxiety after a listening session is not the same result as an EEG change, improved test score, or clinical treatment effect.
 
 ### What the evidence supports today
 
@@ -272,7 +272,7 @@ You can review individual papers and evidence notes in the [Binaural Studio rese
 
 ## What are binaural beats used for?
 
-People commonly use binaural beat tracks during focused work, studying, meditation, relaxation, and sleep routines. Researchers have also examined attention, memory, anxiety, pain perception, mood, and sleep-related outcomes.
+People commonly use binaural beat tracks during focused work, studying, meditation, relaxation, and sleep routines. Researchers have also examined attention, memory, anxiety, pain perception, mood, and sleep-related outcomes. Binaural Studio has [practical guides for these common use cases](/uses).
 
 The intended use of a track is not proof of its effect. A “focus” label usually tells you what the producer designed the session for. It does not guarantee that the frequency will improve concentration.
 
@@ -327,7 +327,7 @@ They require separate tones to reach each ear. Stereo headphones or earbuds are 
 
 ### What is the best binaural beat frequency?
 
-There is no single frequency proven to be best for everyone or every goal. Tracks are often labeled according to EEG bands, but the frequency label alone does not determine the result. Carrier tone, masking audio, volume, timing, activity, and individual response can all matter.
+There is no single frequency proven to be best for everyone or every goal. Tracks are often labeled according to EEG bands, but the frequency label alone does not determine the result. Carrier tone, masking audio, volume, timing, activity, and individual response can all matter. The [frequency guide](/frequency) explains what the common labels mean without treating them as guaranteed settings.
 
 ### How long should you listen?
 
