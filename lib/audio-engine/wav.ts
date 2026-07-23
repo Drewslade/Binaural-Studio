@@ -2,7 +2,6 @@
 export function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   const numChannels = buffer.numberOfChannels;
   const sampleRate = buffer.sampleRate;
-  const format = 1; // PCM
   const bitDepth = 16;
 
   const channels: Float32Array[] = [];
@@ -21,8 +20,27 @@ export function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   }
 
   const dataSize = numChannels * buffer.length * (bitDepth / 8);
-  const arrayBuffer = new ArrayBuffer(44 + dataSize);
+  const header = createWavHeader(numChannels, sampleRate, buffer.length);
+  const arrayBuffer = new ArrayBuffer(dataSize);
   const view = new DataView(arrayBuffer);
+  for (let i = 0; i < interleaved.length; i++) {
+    view.setInt16(i * 2, interleaved[i], true);
+  }
+
+  return new Blob([header, view], { type: "audio/wav" });
+}
+
+/** Create a 44-byte header for a stereo or mono 16-bit PCM WAV file. */
+export function createWavHeader(
+  numChannels: number,
+  sampleRate: number,
+  frameCount: number
+): ArrayBuffer {
+  const format = 1;
+  const bitDepth = 16;
+  const dataSize = numChannels * frameCount * (bitDepth / 8);
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
 
   writeString(view, 0, "RIFF");
   view.setUint32(4, 36 + dataSize, true);
@@ -37,11 +55,7 @@ export function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   view.setUint16(34, bitDepth, true);
   writeString(view, 36, "data");
   view.setUint32(40, dataSize, true);
-  for (let i = 0; i < interleaved.length; i++) {
-    view.setInt16(44 + i * 2, interleaved[i], true);
-  }
-
-  return new Blob([view], { type: "audio/wav" });
+  return header;
 }
 
 function writeString(view: DataView, offset: number, str: string): void {

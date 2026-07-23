@@ -110,7 +110,7 @@ export default function Visualizer({ beatFreq, carrierFreq, playing }: Visualize
   return (
     <canvas
       ref={canvasRef}
-      className="h-28 w-full rounded-xl border border-paper/10 bg-ink"
+      className="h-20 w-full rounded-xl border border-paper/10 bg-ink sm:h-28"
       aria-label="Waveform of the current beat settings"
     />
   );

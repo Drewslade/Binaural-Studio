@@ -20,12 +20,16 @@ export interface ToneGraph {
   scheduleJourney(journey: Journey, startTime: number): void;
 }
 
-export function buildToneGraph(context: BaseAudioContext, params: EngineParams): ToneGraph {
+export function buildToneGraph(
+  context: BaseAudioContext,
+  params: EngineParams,
+  destination: AudioNode = context.destination
+): ToneGraph {
   const now = context.currentTime;
 
   const masterGain = context.createGain();
   masterGain.gain.setValueAtTime(params.volume, now);
-  masterGain.connect(context.destination);
+  masterGain.connect(destination);
 
   let oscLeft: OscillatorNode | null = null;
   let oscRight: OscillatorNode | null = null;
@@ -71,7 +75,7 @@ export function buildToneGraph(context: BaseAudioContext, params: EngineParams):
 
   const noiseGain = context.createGain();
   noiseGain.gain.setValueAtTime(params.noiseType === "none" ? 0 : params.noiseVolume, now);
-  noiseGain.connect(context.destination);
+  noiseGain.connect(destination);
   let noiseSource = createNoiseSource(context, params.noiseType);
   if (noiseSource) noiseSource.connect(noiseGain);
 
