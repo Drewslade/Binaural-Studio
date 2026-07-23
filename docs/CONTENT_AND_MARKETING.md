@@ -124,6 +124,17 @@ Do not manufacture FAQ content solely for search features.
 - Can Binaural Beats Cause Headaches?
 - What Does the Research Say?
 
+## Beginner experience roadmap
+
+The introductory content should work as a connected system rather than forcing one article to serve every beginner need:
+
+1. Keep “What Are Binaural Beats?” as the concise definitional overview and evidence-aware pillar page.
+2. Create a deeper “Binaural Beats 101” getting-started guide from Drew's outline. It should cover choosing a purpose, listening setup, selecting a track or settings, running a first session, evaluating the experience, common mistakes, and reasonable next steps.
+3. Create a dedicated glossary page with stable, plain-language definitions for recurring acoustic, neuroscience, research, and audio-production terms.
+4. Add contextual definitions to articles where they improve comprehension. Important terms should still be defined in the copy on first use. Enhanced term treatments may use a subtle inline indicator with a popover available by hover, keyboard focus, or tap, plus a link to the full glossary.
+5. Test glossary interactions on desktop, mobile, keyboard navigation, and screen readers. Do not rely on hover alone or add an icon after every technical term, which would make articles harder to scan.
+6. Link the overview, 101 guide, glossary, frequency guide, use guides, research library, and Studio together where the reader's next question makes the relationship useful.
+
 ## Article differentiation
 
 The “What Are Binaural Beats?” article should explain the auditory illusion clearly, show a simple two-tone example, explain why headphones matter, separate brainwave claims from the acoustic effect, summarize the research without overstating it, address common uses and safety, link to study summaries, and include original diagrams or audio demonstrations when possible.
