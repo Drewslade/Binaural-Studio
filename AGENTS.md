@@ -10,8 +10,9 @@ Before making material changes, read:
 4. `docs/TECH_STACK.md`
 5. `docs/CONTENT_AND_MARKETING.md`
 6. `docs/TONE_OF_VOICE.md` for content or public-facing copy
-7. `docs/DEVELOPMENT_WORKFLOW.md`
-8. `docs/DECISIONS.md`
+7. `docs/EDITORIAL_WORKFLOW.md` for editorial content
+8. `docs/DEVELOPMENT_WORKFLOW.md`
+9. `docs/DECISIONS.md`
 
 Also inspect the relevant code, content file, route, component, or data model before proposing changes.
 

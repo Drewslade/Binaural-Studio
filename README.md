@@ -44,9 +44,10 @@ Recommended reading order:
 3. [`docs/TECH_STACK.md`](docs/TECH_STACK.md)
 4. [`docs/CONTENT_AND_MARKETING.md`](docs/CONTENT_AND_MARKETING.md)
 5. [`docs/TONE_OF_VOICE.md`](docs/TONE_OF_VOICE.md)
-6. [`docs/DEVELOPMENT_WORKFLOW.md`](docs/DEVELOPMENT_WORKFLOW.md)
-7. [`docs/DECISIONS.md`](docs/DECISIONS.md)
-8. [`AGENTS.md`](AGENTS.md)
+6. [`docs/EDITORIAL_WORKFLOW.md`](docs/EDITORIAL_WORKFLOW.md)
+7. [`docs/DEVELOPMENT_WORKFLOW.md`](docs/DEVELOPMENT_WORKFLOW.md)
+8. [`docs/DECISIONS.md`](docs/DECISIONS.md)
+9. [`AGENTS.md`](AGENTS.md)
 
 Update the relevant documentation when a material project, architectural, editorial, or workflow decision changes. Do not treat older chat context as authoritative when it conflicts with repository documentation.
 

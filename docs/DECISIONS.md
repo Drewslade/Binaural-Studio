@@ -123,7 +123,7 @@ Store public editorial content as Markdown in GitHub and remove Payload from the
 The live site already renders repository Markdown. Payload introduced a second content system, database migrations, security configuration, scheduled jobs, and operational overhead without serving the public content. Drew wants to learn from the simpler workflow before deciding what a custom interface should contain.
 
 **Consequences:**  
-Payload routes, configuration, generated files, dependencies, and environment-variable requirements are removed. The archived Payload database tables remain temporarily protected by RLS and revoked public privileges until the Payload-free production deployment is verified. A custom editorial interface should be designed only after real workflow friction is documented.
+Payload routes, configuration, generated files, dependencies, and environment-variable requirements are removed. After the Payload-free production deployment was verified, the 16 Payload tables were backed up to the private `payload_archive_20260721` schema and removed from Supabase's public schema. A custom editorial interface should be designed only after real workflow friction is documented.
 
 **Revisit when:**  
 The project has enough content volume, collaborators, reusable application data, or scheduling needs that Markdown and pull requests create a measurable bottleneck.

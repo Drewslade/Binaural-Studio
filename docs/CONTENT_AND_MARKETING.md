@@ -18,6 +18,8 @@ The detailed writing standard is maintained in `TONE_OF_VOICE.md`.
 
 Public editorial content is authored as Markdown in GitHub. Published articles live in `content/blog/`. Unfinished articles should remain in a non-public draft location or draft branch until they are approved.
 
+The full status lifecycle, frontmatter schema, research checks, and publication safeguards are defined in `EDITORIAL_WORKFLOW.md`. Start new articles from `content/templates/article.md`.
+
 Structured frontmatter should supply templates with the title, slug, content type, status, author, publication date, updated date, category, featured image, summary, and SEO metadata needed by the page.
 
 The working workflow is:
@@ -135,6 +137,17 @@ Do not manufacture FAQ content solely for search features.
 - How Long Should You Listen?
 - Can Binaural Beats Cause Headaches?
 - What Does the Research Say?
+
+## Beginner experience roadmap
+
+The introductory content should work as a connected system rather than forcing one article to serve every beginner need:
+
+1. Keep “What Are Binaural Beats?” as the concise definitional overview and evidence-aware pillar page.
+2. Create a deeper “Binaural Beats 101” getting-started guide from Drew's outline. It should cover choosing a purpose, listening setup, selecting a track or settings, running a first session, evaluating the experience, common mistakes, and reasonable next steps.
+3. Create a dedicated glossary page with stable, plain-language definitions for recurring acoustic, neuroscience, research, and audio-production terms.
+4. Add contextual definitions to articles where they improve comprehension. Important terms should still be defined in the copy on first use. Enhanced term treatments may use a subtle inline indicator with a popover available by hover, keyboard focus, or tap, plus a link to the full glossary.
+5. Test glossary interactions on desktop, mobile, keyboard navigation, and screen readers. Do not rely on hover alone or add an icon after every technical term, which would make articles harder to scan.
+6. Link the overview, 101 guide, glossary, frequency guide, use guides, research library, and Studio together where the reader's next question makes the relationship useful.
 
 ## Article differentiation
 
