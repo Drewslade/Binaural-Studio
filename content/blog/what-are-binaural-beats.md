@@ -2,9 +2,9 @@
 title: "What Are Binaural Beats?"
 slug: "what-are-binaural-beats"
 contentType: "article"
-status: "draft"
-reviewStage: "owner-review"
-summary: "Binaural beats are a documented auditory illusion created by presenting a slightly different tone to each ear. The perceptual effect is real, while evidence for benefits such as focus or relaxation remains mixed and depends on the listening and study conditions."
+status: "published"
+reviewStage: "published"
+summary: "Binaural beats are a documented auditory illusion created by sending a slightly different tone to each ear. The effect is real. The bigger claims about focus, relaxation, and brainwave changes are still being tested."
 author:
   name: "Drew Slade"
   slug: "drew-slade"
@@ -18,10 +18,10 @@ author:
     - "Practical research synthesis"
 dates:
   created: "2026-07-15"
-  published:
-  updated: "2026-07-21"
-  reviewed:
-  researchChecked: "2026-07-21"
+  published: "2026-07-23"
+  updated: "2026-07-23"
+  reviewed: "2026-07-23"
+  researchChecked: "2026-07-23"
 category: "Binaural Beats Basics"
 tags:
   - "binaural beats"
@@ -33,16 +33,31 @@ seo:
   description: "Learn how binaural beats create an auditory illusion, why headphones matter, and what current research does and does not support."
   canonical: "https://binaural-studio.com/blog/what-are-binaural-beats"
   robots:
-    index: false
-    follow: false
+    index: true
+    follow: true
+featuredImage:
+  url: "/images/blog/what-are-binaural-beats/two-frequencies-one-perceived-rhythm.svg"
+  alt: "A 200 hertz left-channel wave and 210 hertz right-channel wave illustrating a perceived 10 hertz rhythmic difference."
+  width: 1200
+  height: 675
 social:
   openGraph:
     title: "What Are Binaural Beats?"
     description: "A clear guide to the auditory effect, headphone setup, EEG frequency labels, research evidence, and practical limitations."
+    image:
+      url: "/images/blog/what-are-binaural-beats/two-frequencies-one-perceived-rhythm.png"
+      alt: "Two separate stereo frequencies illustrating a perceived 10 hertz binaural beat."
+      width: 1200
+      height: 675
   twitter:
-    card: "summary"
+    card: "summary_large_image"
     title: "What Are Binaural Beats?"
     description: "A clear guide to how binaural beats work and what current research does and does not support."
+    image:
+      url: "/images/blog/what-are-binaural-beats/two-frequencies-one-perceived-rhythm.png"
+      alt: "Two separate stereo frequencies illustrating a perceived 10 hertz binaural beat."
+      width: 1200
+      height: 675
 citations:
   - id: "oster-1973"
     title: "Auditory Beats in the Brain"
@@ -153,46 +168,46 @@ relatedContent:
     relationship: "Practical use guide"
 disclosures:
   aiAssisted: true
-  aiUse: "AI tools assisted with source discovery, research organization, frontmatter, and draft editing. Drew Slade will complete the final editorial review before publication."
+  aiUse: "AI tools assisted with source organization, early drafting, editing, and visual production. Drew Slade directed the article, reviewed the sources and claims, and completed the final editorial review."
   expertReviewed: false
   expertReviewer:
 ---
 
-Two steady tones can create the perception of a rhythm that is not physically present in either audio channel. Play a 200 Hz tone in the left ear and a 210 Hz tone in the right, and you may perceive a soft pulse repeating 10 times per second. That perceived pulse is a binaural beat.
+Most explanations of binaural beats begin with a promise: better focus, deeper sleep, less anxiety, or a shortcut into a particular mental state. Before judging any of those claims, it helps to separate the effect itself from everything that has been built around it.
 
-Binaural beats are a real auditory phenomenon. The larger claims surrounding them are less settled. Researchers have studied whether listening can affect brain activity, attention, anxiety, pain, sleep, and other outcomes, but the findings vary widely. A binaural beat may be useful as part of a focus or relaxation routine. It should not be treated as a guaranteed way to produce a particular mental state or as a medical treatment.
+Play a 200 Hz tone in your left ear and a 210 Hz tone in your right. Instead of hearing two clean, separate pitches, you may notice a soft pulse repeating 10 times per second. Nothing in either audio channel is pulsing at 10 Hz. Your auditory system creates that rhythm as it compares the two steady tones.
+
+That perceptual effect is the binaural beat. It is well documented. Whether listening produces reliable changes in attention, anxiety, pain, sleep, or brain activity is a more complicated question, and the answer depends heavily on the track, the listener, and what a study is actually measuring.
+
+![Two separate frequency waves showing a 200 hertz left channel, a 210 hertz right channel, and a perceived 10 hertz difference.](/images/blog/what-are-binaural-beats/two-frequencies-one-perceived-rhythm.svg)
+
+*The carrier tones stay separate. The 10 Hz rhythm is perceived rather than added to the recording.*
 
 ## The short answer
 
-A binaural beat occurs when two tones with slightly different frequencies are presented separately to each ear. Your auditory system compares the signals and perceives a rhythmic fluctuation at the difference between them.
-
-For example:
+A binaural beat occurs when each ear receives a steady tone at a slightly different frequency. The useful piece of math is simply the difference:
 
 - Left ear: 200 Hz
 - Right ear: 210 Hz
 - Perceived beat: 10 Hz
 
-The 10 Hz beat is not a separate tone added to the recording. It is a perceptual effect produced as the auditory system processes the two inputs. This is why stereo separation matters and why headphones are normally required.
-
-### What to know before going further
-
-- The auditory illusion itself is well established.
-- The beat frequency is the difference between the two tones, not the pitch of either tone.
-- Different audio tracks can use the same beat frequency and still sound or feel very different.
-- Research into brainwave entrainment and practical benefits has produced mixed results.
-- Comfortable volume and ordinary safe-listening habits still apply.
+The 10 Hz beat is not the pitch of either tone and it is not a third tone mixed into the recording. This distinction explains why headphones matter, why two tracks labeled “10 Hz” can sound completely different, and why hearing the effect is not the same as proving a broader benefit.
 
 ## How binaural beats are created
 
 Frequency describes how many times a sound wave repeats each second and is measured in hertz, abbreviated Hz. A 200 Hz tone completes 200 cycles per second. A 210 Hz tone completes 210.
 
-When those tones are delivered separately, one to each ear, the auditory system receives two related but mismatched signals. The listener may perceive a fluctuation equal to the difference between them. In this example, the difference is 10 Hz.
+When those tones are delivered separately, one to each ear, the auditory system receives two closely related but mismatched signals. The 10 Hz difference appears only when those signals are processed together.
+
+![Diagram showing separate 200 hertz and 210 hertz stereo channels leading to auditory processing and a perceived 10 hertz rhythmic difference.](/images/blog/what-are-binaural-beats/how-binaural-beats-are-created.svg)
+
+*Each ear receives a steady carrier tone. The perceived 10 Hz beat is the difference between them, not a separate tone in the recording.*
 
 Gerald Oster's 1973 article in *Scientific American* synthesized earlier work and helped renew research interest in binaural beats. Oster described slow modulations perceived when tones with different frequencies are presented separately to each ear. The phenomenon has since been studied in psychoacoustics, the science of how people perceive sound, as well as neuroscience, psychology, and related fields. ([Oster, 1973](https://doi.org/10.1038/scientificamerican1073-94))
 
 ### Carrier frequency and beat frequency are different
 
-This distinction clears up a great deal of confusion.
+This distinction clears up a lot of the confusion around frequency labels.
 
 In the 200 Hz and 210 Hz example, the two audible pitches are the carrier tones. The 10 Hz difference is the beat frequency. You do not hear 10 Hz as a normal standalone pitch. Instead, you perceive a pulsing or wavering quality in the combined experience.
 
@@ -244,7 +259,7 @@ Researchers have observed neural responses to binaural beats, but the overall li
 
 A 2025 experiment involving 80 undergraduate participants offers a useful example of why the answer is not simply yes or no. Researchers varied beat frequency, carrier tone, onset timing, and the presence of white noise. They found EEG evidence of entrainment under the tested conditions. Specific combinations also improved average attention performance, but the beats did not prevent attention from declining over time during the sustained task. ([Melnichuk, Cooper, and Hawk, 2025](https://doi.org/10.1038/s41598-025-88517-z))
 
-The careful interpretation is that binaural beats can produce measurable neural responses under some conditions. We do not yet have enough consistent evidence to assume that every track entrains the brain in the same way or that entrainment reliably creates a desired outcome.
+Put together, these studies suggest that binaural beats can produce measurable neural responses under some conditions. They do not show that every track entrains the brain in the same way, or that a measured response automatically produces the outcome printed on a track label.
 
 ## Do binaural beats work?
 
@@ -254,7 +269,7 @@ The auditory effect works when the tones and listening setup allow it to be perc
 
 A 2019 meta-analysis combined 22 studies examining cognition, anxiety, and pain perception. The authors reported a medium overall effect across 35 comparisons. They expressed that result as Hedges' g = 0.45, a statistical measure used to compare effects across different studies. Results varied with factors such as frequency, exposure duration, and whether the beats were played before or during a task. Because that average combines different outcomes and listening protocols, it should not be read as proof that every track works for every goal. ([Garcia-Argibay, Santed, and Reales, 2019](https://doi.org/10.1007/s00426-018-1066-8))
 
-That finding is encouraging, but it does not settle every claim. Studies have used different frequencies, carrier tones, session lengths, and masking sounds. They also differ in what the binaural audio was compared against, who participated, and what the researchers measured. A person reporting lower anxiety after a listening session is not the same result as an EEG change, improved test score, or clinical treatment effect.
+That average is encouraging, but it hides substantial variation. Studies have used different frequencies, carrier tones, session lengths, masking sounds, comparison audio, participant groups, and measurements. A person reporting lower anxiety after one session is not the same result as an EEG change, a better test score, or a clinical treatment effect.
 
 ### What the evidence supports today
 
@@ -266,7 +281,7 @@ It is reasonable to say:
 - Findings have not been consistent enough to promise a specific result for every listener.
 - Binaural beats have not been established as a replacement for medical or mental health treatment.
 
-This may be less exciting than a claim that one frequency can switch on perfect focus. It is also a more useful place to begin experimenting.
+That answer is less dramatic than claiming one frequency can switch on perfect focus. It is also a much better starting point for deciding whether a track is useful to you.
 
 You can review individual papers and evidence notes in the [Binaural Studio research library](/research).
 
@@ -274,7 +289,7 @@ You can review individual papers and evidence notes in the [Binaural Studio rese
 
 People commonly use binaural beat tracks during focused work, studying, meditation, relaxation, and sleep routines. Researchers have also examined attention, memory, anxiety, pain perception, mood, and sleep-related outcomes. Binaural Studio has [practical guides for these common use cases](/uses).
 
-The intended use of a track is not proof of its effect. A “focus” label usually tells you what the producer designed the session for. It does not guarantee that the frequency will improve concentration.
+A “focus” label tells you what the producer designed a session for. It does not prove that the frequency will improve concentration.
 
 The broader listening context may contribute to the experience. Putting on headphones, reducing interruptions, choosing a defined task, and repeating the same routine can all act as cues. If a track helps you begin working or settle down at night, that experience may still be useful even when you cannot isolate whether the beat frequency caused the change.
 
@@ -339,9 +354,9 @@ Binaural beats have been studied in connection with anxiety, sleep, attention, p
 
 ## A reasonable way to think about binaural beats
 
-Binaural beats sit in an interesting middle ground. The auditory phenomenon is real, the proposed effects are plausible enough to study, and some findings are encouraging. The evidence does not support treating every frequency label as a reliable control for the brain.
+Binaural beats sit in an interesting middle ground. The auditory phenomenon is real. Some research findings are encouraging. The leap from “this creates a measurable or subjective response” to “this frequency reliably controls a mental state” is where the evidence stops cooperating.
 
-Try them as a listening tool. Pay attention to the full track, the activity, and your response. Keep what proves useful in your own routine without turning one experience into a universal claim.
+Treat them as a listening tool, not a command sent to the brain. Pay attention to the whole track, the activity you pair it with, and your own response. If a session helps, that is useful information. It just is not a universal conclusion.
 
 [Create a binaural beat in the free Binaural Studio generator](/studio).
 
@@ -354,5 +369,3 @@ Try them as a listening tool. Pay attention to the full track, the activity, and
 5. American Academy of Audiology. (2023). [What Exactly Are Binaural Beats?](https://www.audiology.org/what-exactly-are-binaural-beats/)
 6. World Health Organization. (2026). [Deafness and hearing loss: Safe listening](https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening).
 7. Sheng, S., Nalleballe, K., & Yadala, S. (2024). [EEG Benign Variants](https://www.ncbi.nlm.nih.gov/books/NBK555899/). *StatPearls, NCBI Bookshelf*.
-
-
