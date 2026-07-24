@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Markdown from "@/components/Markdown";
+import Markdown, { extractMarkdownHeadings } from "@/components/Markdown";
+import TableOfContents from "@/components/TableOfContents";
 import {
   getBlogPost,
   getBlogPosts,
@@ -38,6 +39,17 @@ function formatDate(value: string | Date): string {
     day: "numeric",
     timeZone: "UTC",
   });
+}
+
+function readingTimeMinutes(markdown: string): number {
+  const readableText = markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[#>*_`~|=-]/g, " ");
+  const words = readableText.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu);
+  return Math.max(1, Math.ceil((words?.length ?? 0) / 225));
 }
 
 function authorData(author: BlogData["author"]): AuthorData | undefined {
@@ -178,85 +190,101 @@ export default async function BlogPostPage({
   const author = authorData(post.data.author);
   const published = getPublishedDate(post.data);
   const updated = getUpdatedDate(post.data);
+  const readingTime = readingTimeMinutes(post.body);
+  const headings = extractMarkdownHeadings(post.body);
   const jsonLd = JSON.stringify(articleJsonLd(post.data, slug)).replace(
     /</g,
     "\\u003c"
   );
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-14">
+    <article className="mx-auto max-w-6xl px-6 py-14">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
 
-      {published && (
-        <p className="font-mono text-sm text-sage">
-          Published {formatDate(published)}
-          {updated && isoDate(updated) !== isoDate(published)
-            ? ` · Updated ${formatDate(updated)}`
-            : ""}
-        </p>
-      )}
-      <h1 className="mt-2 font-display text-4xl font-medium leading-tight text-ink">
-        {post.data.title}
-      </h1>
+      <div className="xl:grid xl:grid-cols-[13rem_minmax(0,48rem)] xl:justify-center xl:gap-12">
+        <TableOfContents headings={headings} variant="desktop" />
 
-      {author && (
-        <div className="mt-5 border-l-2 border-gold pl-4 text-sm text-ink/75">
-          <p>
-            By{" "}
-            {author.url ? (
-              <Link className="text-gold-deep underline" href={author.url}>
-                {author.name}
-              </Link>
-            ) : (
-              author.name
-            )}
-            {author.role ? `, ${author.role}` : ""}
+        <div className="min-w-0">
+          <p className="font-mono text-sm text-sage">
+            {published ? `Published ${formatDate(published)}` : null}
+            {updated && published && isoDate(updated) !== isoDate(published)
+              ? ` · Updated ${formatDate(updated)}`
+              : ""}
+            {published ? " · " : ""}
+            {readingTime} min read
           </p>
-          {author.bio && <p className="mt-1 leading-relaxed">{author.bio}</p>}
-        </div>
-      )}
+          <h1 className="mt-2 font-display text-4xl font-medium leading-tight text-ink">
+            {post.data.title}
+          </h1>
 
-      <Markdown className="mt-8 max-w-none">{post.body}</Markdown>
-
-      {post.data.relatedContent && post.data.relatedContent.length > 0 && (
-        <aside className="mt-12 border-t border-ink/15 pt-8">
-          <h2 className="font-display text-2xl font-medium text-ink">
-            Related content
-          </h2>
-          <ul className="mt-4 space-y-3">
-            {post.data.relatedContent.map((item) => (
-              <li key={item.url}>
-                <Link className="text-gold-deep underline" href={item.url}>
-                  {item.title}
-                </Link>
-                {item.relationship ? (
-                  <span className="ml-2 text-sm text-sage">
-                    {item.relationship}
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
-
-      {post.data.disclosures?.aiAssisted && (
-        <aside className="mt-10 rounded-xl border border-ink/15 bg-paper p-5 text-sm text-ink/75">
-          <h2 className="font-medium text-ink">AI transparency</h2>
-          <p className="mt-1 leading-relaxed">
-            {post.data.disclosures.aiUse ??
-              "AI tools assisted with research organization and drafting."}
-          </p>
-          {!post.data.disclosures.expertReviewed && (
-            <p className="mt-1 leading-relaxed">
-              This article has not received external expert review.
-            </p>
+          {author && (
+            <div className="mt-5 border-l-2 border-gold pl-4 text-sm text-ink/75">
+              <p>
+                By{" "}
+                {author.url ? (
+                  <Link className="text-gold-deep underline" href={author.url}>
+                    {author.name}
+                  </Link>
+                ) : (
+                  author.name
+                )}
+                {author.role ? `, ${author.role}` : ""}
+              </p>
+              {author.bio && (
+                <p className="mt-1 leading-relaxed">{author.bio}</p>
+              )}
+            </div>
           )}
-        </aside>
-      )}
+
+          <TableOfContents headings={headings} variant="mobile" />
+
+          <Markdown className="mt-8 max-w-none">{post.body}</Markdown>
+
+          {post.data.relatedContent &&
+            post.data.relatedContent.length > 0 && (
+              <aside className="mt-12 border-t border-ink/15 pt-8">
+                <h2 className="font-display text-2xl font-medium text-ink">
+                  Related content
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {post.data.relatedContent.map((item) => (
+                    <li key={item.url}>
+                      <Link
+                        className="text-gold-deep underline"
+                        href={item.url}
+                      >
+                        {item.title}
+                      </Link>
+                      {item.relationship ? (
+                        <span className="ml-2 text-sm text-sage">
+                          {item.relationship}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            )}
+
+          {post.data.disclosures?.aiAssisted && (
+            <aside className="mt-10 rounded-xl border border-ink/15 bg-paper p-5 text-sm text-ink/75">
+              <h2 className="font-medium text-ink">AI transparency</h2>
+              <p className="mt-1 leading-relaxed">
+                {post.data.disclosures.aiUse ??
+                  "AI tools assisted with research organization and drafting."}
+              </p>
+              {!post.data.disclosures.expertReviewed && (
+                <p className="mt-1 leading-relaxed">
+                  This article has not received external expert review.
+                </p>
+              )}
+            </aside>
+          )}
+        </div>
+      </div>
     </article>
   );
 }
