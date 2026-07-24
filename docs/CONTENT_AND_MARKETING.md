@@ -38,18 +38,31 @@ Each major article should include:
 
 - A clear title.
 - A direct answer near the beginning.
-- Plain-language explanation.
-- Definitions of important terms.
-- Practical examples.
-- Evidence summary.
-- Limitations.
-- Safety considerations where relevant.
+- Plain-language explanation suited to the reader and topic.
+- Definitions of important terms when needed.
+- Practical examples, demonstrations, or applications when they improve understanding.
+- Evidence and limitations when the page makes scientific, medical, wellness, or outcome claims.
+- Safety considerations only when they are central to the topic, necessary for an instruction, or needed to prevent a meaningful risk.
 - Author information.
 - Publish date.
 - Last reviewed or updated date.
-- Sources.
+- Sources for factual claims.
 - Related articles.
 - Structured data where appropriate.
+
+Do not force every article into the same structure. A page about acoustics, history, interface design, or a narrow technical concept does not need a generic safety or efficacy section simply because other pages do.
+
+## Site-wide safety, efficacy, and disclaimer system
+
+Handle baseline guidance in a small number of strong, easy-to-find locations:
+
+1. Publish a dedicated safety and side-effects page.
+2. Publish a dedicated evidence page or research hub that explains what has and has not been established.
+3. Maintain a concise site disclaimer linked from the footer and other appropriate trust surfaces.
+4. Add a reusable expandable “Listening note” beside audio players and interactive demonstrations. It should cover comfortable volume, stereo-headphone context, stopping if the audio is uncomfortable, and a link to the full safety page.
+5. Add article-level safety or efficacy coverage only when the page's primary question, claims, or instructions require it.
+
+This system should reduce repetition without weakening the standard for claims. Qualify specific claims where they appear, but link to the canonical pages instead of reproducing the same general warning in every article.
 
 ## Evidence standards
 
@@ -106,8 +119,9 @@ Do not manufacture FAQ content solely for search features.
 
 - What Are Binaural Beats?
 
-### Supporting articles
+### Supporting articles and guides
 
+- Binaural Beats 101: An Interactive Beginner's Guide.
 - How Do Binaural Beats Work?
 - Do Binaural Beats Actually Work?
 - Binaural Beats for Focus and Studying.
@@ -124,7 +138,40 @@ Do not manufacture FAQ content solely for search features.
 
 ## Article differentiation
 
-The “What Are Binaural Beats?” article should explain the auditory illusion clearly, show a simple two-tone example, explain why headphones matter, separate brainwave claims from the acoustic effect, summarize the research without overstating it, address common uses and safety, link to study summaries, and include original diagrams or audio demonstrations when possible.
+The “What Are Binaural Beats?” article should explain the auditory illusion clearly, show a compact two-tone example, explain why headphones matter, separate brainwave claims from the acoustic effect, summarize the research without overstating it, link to the dedicated safety and evidence pages, and include an original diagram or audio demonstration when possible.
+
+“Binaural Beats 101” should be a guided learning experience rather than a longer version of the overview article. It should help a beginner hear how binaural beats are constructed, understand the few settings that matter, choose whether to try a session, and move directly into the Studio.
+
+## Interactive Binaural Beats 101 experience
+
+Treat this page as an evergreen Learn page and onboarding path. The first version should include:
+
+1. **Hear the construction:** A three-state control for left tone, binaural pair, and right tone. The center state routes one carrier tone to the left ear and a slightly different carrier tone to the right ear so the listener can compare the separate tones with the perceived beat.
+2. **See what changes:** A simple visual showing the left frequency, right frequency, and the difference between them. Update it as the demonstration changes.
+3. **Try a beat frequency:** Let readers choose from a small, curated set of beat frequencies. Label them as examples or common conventions, not guaranteed controls for a mental state.
+4. **Choose a purpose:** Offer a short path for focus, relaxation, meditation, or sleep preparation that explains the suggested starting configuration and opens it in the Studio.
+5. **Run a first session:** Give the reader a brief, defined listening session and one or two observations to record afterward.
+6. **Continue learning:** Link to the mechanism, evidence, safety, frequency, and headphone pages only when the reader asks for more depth.
+
+Interaction requirements:
+
+- Do not autoplay.
+- Require an explicit headphone confirmation before the stereo demonstration.
+- Use smooth gain ramps when starting, stopping, or changing tones to avoid clicks and abrupt volume changes.
+- Keep output conservative and pair the player with the reusable expandable listening note.
+- Make the controls usable on mobile and by keyboard, with text labels that do not rely on the waveform alone.
+- Preserve audio playback expectations already established by the Studio where practical.
+
+Use clear controls such as “Left tone,” “Hear the beat,” and “Right tone” instead of relying on a precision slider alone. A slider may support exploration, but the center binaural state must be easy to select.
+
+A frequency page may include a short preview using a documented carrier-tone pair. The page should distinguish the **beat frequency** from the audible **carrier tones**. For example, a 10 Hz binaural beat could use 200 Hz in one ear and 210 Hz in the other; it should not be described as simply playing an audible 10 Hz tone.
+
+Recommended division of labor:
+
+- “What Are Binaural Beats?” contains the compact concept demonstration.
+- “Binaural Beats 101” contains the full guided interactive lesson and first-session path.
+- Frequency pages contain short, consistent previews for their specific configurations.
+- The Studio remains the full creation and listening tool.
 
 ## Original content opportunities
 
